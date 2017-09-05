@@ -290,4 +290,8 @@ public class LoginActivity extends ComumActivity implements GoogleApiClient.OnCo
         return valido;
     }
 
+    public void teste() {
+
+    }
+
 }// fim da classe
