@@ -37,7 +37,6 @@ import com.google.firebase.crash.FirebaseCrash;
 
 import br.com.bhl.superfid.main.Usuario;
 
-
 /**
  * A login screen that offers login via email/password.
  */
