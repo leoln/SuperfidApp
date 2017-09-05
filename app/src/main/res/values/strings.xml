@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">SupeRFiD</string>
+
+    <!-- Strings related to login -->
+    <string name="lbl_email">E-mail</string>
+    <string name="lbl_senha">Senha</string>
+    <string name="lbl_recuperar">Recuperar acesso</string>
+    <string name="lbl_btn_facebook">Fazer login com o Facebook</string>
+    <string name="lbl_btn_google">Fazer login com o Google</string>
+    <string name="lbl_cadastrar">Cadastrar-se</string>
+    <string name="lbl_nome">Nome</string>
+    <string name="lbl_sobrenome">Sobrenome</string>
+    <string name="lbl_ddd">DDD</string>
+    <string name="lbl_telefone">Telefone</string>
+    <string name="lbl_dtnascimento">Data de Nascimento</string>
+    <string name="lbl_sign_out">Sign out</string>
+    <string name="loading">Carregando…</string>
+    <string name="btn_sign_in">Entrar</string>
+    <string name="btn_scanner">Parear Dispositivo</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="action_sign_up_short">Cadastro</string>
+    <string name="action_sign_up">Cadastrar</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">Esse campo é obrigatório</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email completions."</string>
+
+    <string name="facebook_app_id">496809747321084</string>
+    <string name="fb_login_protocol_scheme">fb496809747321084</string>
+    <string name="lbl_cpf">CPF</string>
+
+</resources>

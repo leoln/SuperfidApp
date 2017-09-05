@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "873164849506",
+    "firebase_url": "https://superfidapp-8695.firebaseio.com",
+    "project_id": "superfidapp-8695",
+    "storage_bucket": "superfidapp-8695.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:873164849506:android:7612d021211e9e5a",
+        "android_client_info": {
+          "package_name": "br.com.bhl.superfid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "873164849506-65drabis2md3maob4e3a1p4jkdlm3av3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.bhl.superfid",
+            "certificate_hash": "c0dc02208934648df953c9c5df7758b4d07f738b"
+          }
+        },
+        {
+          "client_id": "873164849506-mhgfsqt00d96ftne37g1dtu588i382df.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMvhBtNmMu_BnuwURaY34pQAXPhNiwI7Y"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "873164849506-mhgfsqt00d96ftne37g1dtu588i382df.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
