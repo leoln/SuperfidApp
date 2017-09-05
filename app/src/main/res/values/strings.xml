@@ -29,5 +29,6 @@
     <string name="facebook_app_id">496809747321084</string>
     <string name="fb_login_protocol_scheme">fb496809747321084</string>
     <string name="lbl_cpf">CPF</string>
+    <string name="lbl_recuperar_acesso">Recuperar acesso via e-mail</string>
 
 </resources>
