@@ -4,7 +4,7 @@
     <!-- Strings related to login -->
     <string name="lbl_email">E-mail</string>
     <string name="lbl_senha">Senha</string>
-    <string name="lbl_recuperar">Recuperar acesso</string>
+    <string name="lbl_recuperar">Recuperar Acesso</string>
     <string name="lbl_btn_facebook">Fazer login com o Facebook</string>
     <string name="lbl_btn_google">Fazer login com o Google</string>
     <string name="lbl_cadastrar">Cadastrar-se</string>
