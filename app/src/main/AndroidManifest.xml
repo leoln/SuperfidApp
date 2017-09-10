@@ -77,20 +77,8 @@
             android:theme="@style/Theme.Intro" />
 
         <activity
-            android:name=".bluetooth.PairedDevices"
-            android:label="Paired Devices"
-            android:parentActivityName=".MainBluetoothActivity"
-            tools:targetApi="jelly_bean" />
-
-        <activity
-            android:name=".bluetooth.DiscoveredDevices"
-            android:label="Discovered Devices"
-            android:parentActivityName=".MainBluetoothActivity"
-            tools:targetApi="jelly_bean" />
-
-        <activity
             android:name=".MainBluetoothActivity"
-            android:label="Main Bt" />
+            android:label="Carrinho de Compras" />
 
     </application>
 

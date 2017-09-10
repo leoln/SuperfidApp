@@ -151,6 +151,8 @@ public class ConnectionThread extends Thread {
 
         if (btSocket != null) {
 
+
+
             /*  Envia um código para a Activity principal informando que a
             a conexão ocorreu com sucesso.
              */
@@ -180,11 +182,12 @@ public class ConnectionThread extends Thread {
                     Esta thread permanecerá em estado de escuta até que
                 a variável running assuma o valor false.
                  */
-                while (running) {
 
-                    //envia caracter de confirmacao para o hardware
-                    byte[] init = "1".getBytes();
-                    write(init);
+                //envia caracter de confirmacao para o hardware
+                byte[] init = "1".getBytes();
+                write(init);
+
+                while (running) {
 
                     bytes = input.read(buffer);
 

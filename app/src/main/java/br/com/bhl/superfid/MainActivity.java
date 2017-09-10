@@ -60,11 +60,11 @@ public class MainActivity extends AppCompatActivity {
             if (result.getContents() == null) {
                 Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
             } else {
-                finish();
+                //Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
                 Intent it = new Intent(this, MainBluetoothActivity.class);
                 it.putExtra("qrResult",result.getContents());
                 startActivity(it);
-                //Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
+                finish();
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
