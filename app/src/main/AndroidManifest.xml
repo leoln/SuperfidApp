@@ -17,6 +17,7 @@
         android:roundIcon="@mipmap/logo_mini"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -25,6 +26,7 @@
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
+
         <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true">
@@ -37,6 +39,7 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".LoginActivity"
             android:label="@string/app_name"
@@ -48,39 +51,47 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
+
         <activity
             android:name=".CadastrarActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
+
         <activity
             android:name=".RecuperarActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
+
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="fullSensor"
             tools:replace="screenOrientation" />
+
         <activity
             android:name=".IntroducaoActivity"
             android:theme="@style/Theme.Intro" />
+
         <activity
             android:name=".bluetooth.PairedDevices"
             android:label="Paired Devices"
             android:parentActivityName=".MainBluetoothActivity"
             tools:targetApi="jelly_bean" />
+
         <activity
             android:name=".bluetooth.DiscoveredDevices"
             android:label="Discovered Devices"
             android:parentActivityName=".MainBluetoothActivity"
             tools:targetApi="jelly_bean" />
+
         <activity
             android:name=".MainBluetoothActivity"
             android:label="Main Bt" />
-        <activity android:name=".CompletarCadastroActivity"></activity>
+
     </application>
 
 </manifest>

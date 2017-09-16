@@ -19,7 +19,7 @@
             android:id="@+id/recycler"
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
-            android:layout_marginBottom="110dp" />
+            android:layout_marginBottom="110dp"/>
 
         <LinearLayout
             android:id="@+id/linearLayout1"
