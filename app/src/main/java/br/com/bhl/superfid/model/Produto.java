@@ -1,4 +1,4 @@
-package br.com.bhl.superfid.main;
+package br.com.bhl.superfid.model;
 
 /**
  * Created by hericles on 28/05/17.

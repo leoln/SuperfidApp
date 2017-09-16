@@ -1,6 +1,5 @@
 package br.com.bhl.superfid;
 
-import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -24,7 +23,7 @@ import java.util.List;
 import br.com.bhl.superfid.bluetooth.ConnectionThread;
 import br.com.bhl.superfid.bluetooth.DiscoveredDevices;
 import br.com.bhl.superfid.bluetooth.PairedDevices;
-import br.com.bhl.superfid.main.Produto;
+import br.com.bhl.superfid.model.Produto;
 
 /**
  * Created by hericlespontes on 16/07/17.

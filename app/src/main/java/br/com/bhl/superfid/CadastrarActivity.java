@@ -27,7 +27,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import br.com.bhl.superfid.main.Usuario;
+import br.com.bhl.superfid.model.Usuario;
 import br.com.bhl.superfid.util.Mask;
 
 public class CadastrarActivity extends ComumActivity implements DatabaseReference.CompletionListener {

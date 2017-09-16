@@ -35,7 +35,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.crash.FirebaseCrash;
 
-import br.com.bhl.superfid.main.Usuario;
+import br.com.bhl.superfid.model.Usuario;
 
 /**
  * A login screen that offers login via email/password.
