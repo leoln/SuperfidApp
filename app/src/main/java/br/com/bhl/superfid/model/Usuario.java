@@ -3,7 +3,6 @@ package br.com.bhl.superfid.model;
 import com.google.firebase.database.DatabaseReference;
 
 import java.util.Calendar;
-import java.util.Date;
 
 import br.com.bhl.superfid.util.LibraryClass;
 
