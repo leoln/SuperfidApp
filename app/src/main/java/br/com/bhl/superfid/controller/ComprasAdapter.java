@@ -1,4 +1,4 @@
-package br.com.bhl.superfid;
+package br.com.bhl.superfid.controller;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -8,7 +8,8 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-import br.com.bhl.superfid.main.Produto;
+import br.com.bhl.superfid.R;
+import br.com.bhl.superfid.model.Produto;
 
 /**
  * Created by hericles on 28/05/17.

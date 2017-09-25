@@ -1,4 +1,4 @@
-package br.com.bhl.superfid;
+package br.com.bhl.superfid.view;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -27,7 +27,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import br.com.bhl.superfid.main.Usuario;
+import br.com.bhl.superfid.R;
+import br.com.bhl.superfid.model.Usuario;
 import br.com.bhl.superfid.util.Mask;
 
 public class CadastrarActivity extends ComumActivity implements DatabaseReference.CompletionListener {

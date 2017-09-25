@@ -1,8 +1,10 @@
-package br.com.bhl.superfid;
+package br.com.bhl.superfid.controller;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
+
+import br.com.bhl.superfid.R;
 
 /**
  * Created by hericles on 28/05/17.

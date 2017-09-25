@@ -41,7 +41,7 @@
         </activity>
 
         <activity
-            android:name=".LoginActivity"
+            android:name=".view.LoginActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.LoginActionbar"
             android:windowSoftInputMode="stateHidden">
@@ -53,17 +53,17 @@
         </activity>
 
         <activity
-            android:name=".MainActivity"
+            android:name=".view.MainActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
 
         <activity
-            android:name=".CadastrarActivity"
+            android:name=".view.CadastrarActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
 
         <activity
-            android:name=".RecuperarActivity"
+            android:name=".view.RecuperarActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
 
@@ -73,11 +73,11 @@
             tools:replace="screenOrientation" />
 
         <activity
-            android:name=".IntroducaoActivity"
+            android:name=".view.IntroducaoActivity"
             android:theme="@style/Theme.Intro" />
 
         <activity
-            android:name=".MainBluetoothActivity"
+            android:name=".view.MainBluetoothActivity"
             android:label="Carrinho de Compras" />
 
     </application>

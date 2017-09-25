@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="70dp"
-    tools:context=".CadastrarActivity"
+    tools:context=".view.CadastrarActivity"
     tools:showIn="@layout/activity_cadastrar">
 
     <ProgressBar

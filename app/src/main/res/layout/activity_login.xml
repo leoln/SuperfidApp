@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context=".LoginActivity"
+    tools:context=".view.LoginActivity"
     android:background="#FFFFFF">
 
     <RelativeLayout

@@ -1,4 +1,4 @@
-package br.com.bhl.superfid;
+package br.com.bhl.superfid.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,7 @@ import android.view.View;
 import agency.tango.materialintroscreen.MaterialIntroActivity;
 import agency.tango.materialintroscreen.SlideFragmentBuilder;
 import agency.tango.materialintroscreen.animations.IViewTranslation;
+import br.com.bhl.superfid.R;
 
 public class IntroducaoActivity extends MaterialIntroActivity {
 

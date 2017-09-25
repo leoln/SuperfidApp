@@ -1,4 +1,4 @@
-package br.com.bhl.superfid.main;
+package br.com.bhl.superfid.model;
 
 import com.google.firebase.database.DatabaseReference;
 

@@ -1,4 +1,4 @@
-package br.com.bhl.superfid;
+package br.com.bhl.superfid.view;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,6 +13,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.crash.FirebaseCrash;
+
+import br.com.bhl.superfid.R;
 
 public class RecuperarActivity extends AppCompatActivity {
 

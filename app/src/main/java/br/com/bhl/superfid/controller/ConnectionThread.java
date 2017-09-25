@@ -1,4 +1,4 @@
-package br.com.bhl.superfid.bluetooth;
+package br.com.bhl.superfid.controller;
 
 /**
  * Created by hericlespontes on 15/07/17.
@@ -17,7 +17,7 @@ import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.UUID;
 
-import br.com.bhl.superfid.MainBluetoothActivity;
+import br.com.bhl.superfid.view.MainBluetoothActivity;
 
 public class ConnectionThread extends Thread {
 

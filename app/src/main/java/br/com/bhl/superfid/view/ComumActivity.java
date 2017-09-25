@@ -1,4 +1,4 @@
-package br.com.bhl.superfid;
+package br.com.bhl.superfid.view;
 
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;

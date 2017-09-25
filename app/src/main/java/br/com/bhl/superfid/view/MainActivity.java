@@ -1,4 +1,4 @@
-package br.com.bhl.superfid;
+package br.com.bhl.superfid.view;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +13,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.journeyapps.barcodescanner.CaptureActivity;
+
+import br.com.bhl.superfid.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -64,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent it = new Intent(this, MainBluetoothActivity.class);
                 it.putExtra("qrResult",result.getContents());
                 startActivity(it);
-                finish();
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
@@ -83,6 +84,11 @@ public class MainActivity extends AppCompatActivity {
         integrator.setBeepEnabled(true);
         integrator.setCaptureActivity(CaptureActivity.class);
         integrator.initiateScan();
+    }
+
+    protected void onDestroy() {
+        finish();
+        super.onDestroy();
     }
 
 }// fim da classe
