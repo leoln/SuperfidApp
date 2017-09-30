@@ -13,7 +13,7 @@ public class Produto {
     private String lote;
     private double unidades;
 
-    public Produto(String descricao, double precoUnitario, String marca, String validade, String lote, double unidades){
+    public Produto(String descricao, double precoUnitario, String marca, String validade, String lote, double unidades) {
         this.descricao = descricao;
         this.precoUnitario = precoUnitario;
         this.marca = marca;
@@ -69,4 +69,5 @@ public class Produto {
     public void setUnidades(double unidades) {
         this.unidades = unidades;
     }
+
 }
