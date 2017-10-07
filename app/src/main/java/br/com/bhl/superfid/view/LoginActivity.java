@@ -9,30 +9,12 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
-import com.facebook.AccessToken;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.SignInButton;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.crash.FirebaseCrash;
 
 import br.com.bhl.superfid.R;
@@ -41,18 +23,10 @@ import br.com.bhl.superfid.model.Usuario;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends ComumActivity implements GoogleApiClient.OnConnectionFailedListener {
-
-    private static final int SIGN_IN_GOOGLE = 7896;
+public class LoginActivity extends ComumActivity {
 
     private AutoCompleteTextView edt_email;
     private EditText edt_senha;
-
-    private LoginButton btn_facebook;
-    private CallbackManager callbackManager;
-
-    private SignInButton btn_google;
-    private GoogleApiClient googleApiClient;
 
     // Variaveis para autenticar usuario
     private FirebaseAuth myAuth;
@@ -64,54 +38,6 @@ public class LoginActivity extends ComumActivity implements GoogleApiClient.OnCo
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        // FACEBOOK LOG IN
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        AppEventsLogger.activateApp(this);
-
-        callbackManager = CallbackManager.Factory.create();
-
-        btn_facebook = (LoginButton) findViewById(R.id.btn_facebook);
-        btn_facebook.setReadPermissions("email", "public_profile");
-        btn_facebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                handleFacebookAccessToken(loginResult.getAccessToken());
-            }
-
-            @Override
-            public void onCancel() {
-                showToast("Login com Facebook cancelado.");
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-                showToast("Erro Facebook 1! Tente mais tarde.");
-            }
-        });
-
-        // GOOGLE SIGN IN
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-
-        googleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
-
-        btn_google = (SignInButton) findViewById(R.id.btn_google);
-        btn_google.setSize(SignInButton.SIZE_WIDE);
-        btn_google.setColorScheme(SignInButton.COLOR_DARK);
-        btn_google.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                Intent intent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
-                startActivityForResult(intent, SIGN_IN_GOOGLE);
-            }
-        });
 
         myAuth = FirebaseAuth.getInstance();
         myAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -126,7 +52,6 @@ public class LoginActivity extends ComumActivity implements GoogleApiClient.OnCo
 
         initViews();
         initUser();
-
     }
 
     /**********************************************************************************
@@ -146,26 +71,9 @@ public class LoginActivity extends ComumActivity implements GoogleApiClient.OnCo
     }
 
     @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        FirebaseCrash
-                .report(
-                        new Exception(
-                                connectionResult.getErrorCode() + ": " + connectionResult.getErrorMessage()
-                        )
-                );
-        showSnackbar(connectionResult.getErrorMessage());
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == SIGN_IN_GOOGLE) {
-            GoogleSignInResult resultado = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            handleSignResult(resultado);
-        } else {
-            callbackManager.onActivityResult(requestCode, resultCode, data);
-        }
     }
 
     /**********************************************************************************
@@ -201,46 +109,14 @@ public class LoginActivity extends ComumActivity implements GoogleApiClient.OnCo
         startActivity(intent);
     }
 
-    public void chamarIntroducaoActivity() {
+    /*public void chamarIntroducaoActivity() {
         Intent intent = new Intent(this, IntroducaoActivity.class);
         startActivity(intent);
         finish();
-    }
-
-    private void handleFacebookAccessToken(AccessToken accessToken) {
-        AuthCredential credential = FacebookAuthProvider.getCredential(accessToken.getToken());
-        myAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (!task.isSuccessful()) {
-                    showToast("Erro Facebook 2! Tente mais tarde.");
-                }
-            }
-        });
-    }
-
-    private void handleSignResult(GoogleSignInResult resultado) {
-        if (resultado.isSuccess()) {
-            firebaseAuthWithGoogle(resultado.getSignInAccount());
-        } else {
-            showToast("Erro Google 1! Tente mais tarde.");
-        }
-    }
-
-    private void firebaseAuthWithGoogle(GoogleSignInAccount signInAccount) {
-        AuthCredential credential = GoogleAuthProvider.getCredential(signInAccount.getIdToken(), null);
-        myAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (!task.isSuccessful()) {
-                    showToast("Erro Google 2! Tente mais tarde.");
-                }
-            }
-        });
-    }
+    }*/
 
     public void signIn(View view) {
-        if (!validarForm()) {
+        if (!validarFormulario()) {
             return;
         }
 
@@ -258,7 +134,6 @@ public class LoginActivity extends ComumActivity implements GoogleApiClient.OnCo
 
                         if (!task.isSuccessful()) {
                             showSnackbar("Login falhou");
-                            return;
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -269,7 +144,7 @@ public class LoginActivity extends ComumActivity implements GoogleApiClient.OnCo
         });
     }
 
-    private boolean validarForm() {
+    private boolean validarFormulario() {
         boolean valido = true;
 
         String email = edt_email.getText().toString();
