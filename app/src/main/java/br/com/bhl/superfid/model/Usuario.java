@@ -1,14 +1,6 @@
 package br.com.bhl.superfid.model;
 
-import com.google.firebase.database.DatabaseReference;
-
 import java.util.Calendar;
-
-import br.com.bhl.superfid.util.LibraryClass;
-
-/**
- * Created by leonardoln on 12/07/2017.
- */
 
 public class Usuario {
 
@@ -107,16 +99,6 @@ public class Usuario {
 
     public void setSenha(String senha) {
         this.senha = senha;
-    }
-
-    public void salvarDatabase(DatabaseReference.CompletionListener... completionListener) {
-        DatabaseReference firebase = LibraryClass.getFirebase().child("users").child(getCodigo());
-
-        if (completionListener.length == 0) {
-            firebase.setValue(this);
-        } else {
-            firebase.setValue(this, completionListener[0]);
-        }
     }
 
     public static String tirarCaracteresEspeciais( String texto ) {

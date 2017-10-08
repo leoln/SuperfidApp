@@ -14,70 +14,42 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.crash.FirebaseCrash;
 
 import br.com.bhl.superfid.R;
 import br.com.bhl.superfid.model.Usuario;
+import br.com.bhl.superfid.util.FirebaseConnection;
 
-/**
- * A login screen that offers login via email/password.
- */
 public class LoginActivity extends ComumActivity {
 
     private AutoCompleteTextView edt_email;
     private EditText edt_senha;
 
-    // Variaveis para autenticar usuario
-    private FirebaseAuth myAuth;
-    private FirebaseAuth.AuthStateListener myAuthListener;
-
     private Usuario usuario;
+
+    private FirebaseAuth firebaseAuth;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        myAuth = FirebaseAuth.getInstance();
-        myAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser usuario = myAuth.getCurrentUser();
-                if (usuario != null) {
-                    chamarMainActivity();
-                }
-            }
-        };
-
         initViews();
-        initUser();
     }
 
-    /**********************************************************************************
-     *********************************************************************************/
+    /* ***************************************************************************
+    *                      METODOS DE CICLO DE VIDA DO ANDROID
+    * *************************************************************************** */
+
     @Override
     protected void onStart() {
         super.onStart();
-        myAuth.addAuthStateListener(myAuthListener);
+        firebaseAuth = FirebaseConnection.getFirebaseAuth();
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (myAuthListener != null) {
-            myAuth.removeAuthStateListener(myAuthListener);
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-    }
-
-    /**********************************************************************************
-     *********************************************************************************/
+    /* ***************************************************************************
+    *                       METODOS HERDADOS DA CLASSE PAI
+    * *************************************************************************** */
     @Override
     protected void initViews() {
         edt_email = (AutoCompleteTextView) findViewById(R.id.edt_email);
@@ -92,8 +64,9 @@ public class LoginActivity extends ComumActivity {
         usuario.setSenha(edt_senha.getText().toString());
     }
 
-    /**********************************************************************************
-     *********************************************************************************/
+    /* ***************************************************************************
+    *                      METODOS DE
+    * *************************************************************************** */
     private void chamarMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
@@ -109,11 +82,11 @@ public class LoginActivity extends ComumActivity {
         startActivity(intent);
     }
 
-    /*public void chamarIntroducaoActivity() {
+    public void chamarIntroducaoActivity() {
         Intent intent = new Intent(this, IntroducaoActivity.class);
         startActivity(intent);
         finish();
-    }*/
+    }
 
     public void signIn(View view) {
         if (!validarFormulario()) {
@@ -124,19 +97,21 @@ public class LoginActivity extends ComumActivity {
         initUser();
 
         FirebaseCrash.log("LoginActivity:signIn()");
-        myAuth.signInWithEmailAndPassword(
+        firebaseAuth.signInWithEmailAndPassword(
                 usuario.getEmail(),
                 usuario.getSenha()
-        )
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-
-                        if (!task.isSuccessful()) {
-                            showSnackbar("Login falhou");
-                        }
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
+        ).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    closeProgressBar();
+                    chamarMainActivity();
+                } else {
+                    closeProgressBar();
+                    showSnackbar("Login falhou");
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 FirebaseCrash.report(e);
@@ -165,5 +140,4 @@ public class LoginActivity extends ComumActivity {
 
         return valido;
     }
-
-}// fim da classe
+}
