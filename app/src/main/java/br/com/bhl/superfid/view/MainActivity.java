@@ -16,7 +16,6 @@ import com.google.zxing.integration.android.IntentResult;
 import com.journeyapps.barcodescanner.CaptureActivity;
 
 import br.com.bhl.superfid.R;
-import br.com.bhl.superfid.util.FirebaseConnection;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setTitle("Seja bem-vindo " /*+ firebaseUser.getDisplayName() + "!"*/);
         setSupportActionBar(toolbar);
 
+        firebaseAuth = FirebaseAuth.getInstance();
+
     }
 
     /* ***************************************************************************
@@ -50,19 +51,12 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_sign_out) {
-            FirebaseConnection.logOut();
+            firebaseAuth.signOut();
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        firebaseAuth = FirebaseConnection.getFirebaseAuth();
-        firebaseUser = FirebaseConnection.getFirebaseUser();
     }
 
     @Override
@@ -95,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
         integrator.setOrientationLocked(true);
         integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
         integrator.setPrompt("Aproxime do QRCode do Carrinho");
-
         integrator.setTimeout(8000);
         integrator.setBeepEnabled(true);
         integrator.setCaptureActivity(CaptureActivity.class);

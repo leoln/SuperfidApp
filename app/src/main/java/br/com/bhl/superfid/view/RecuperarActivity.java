@@ -14,7 +14,6 @@ import com.google.firebase.crash.FirebaseCrash;
 
 import br.com.bhl.superfid.R;
 import br.com.bhl.superfid.model.Usuario;
-import br.com.bhl.superfid.util.FirebaseConnection;
 
 
 public class RecuperarActivity extends ComumActivity {
@@ -34,17 +33,9 @@ public class RecuperarActivity extends ComumActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        firebaseAuth = FirebaseAuth.getInstance();
+
         initViews();
-    }
-
-    /* ***************************************************************************
-    *                      METODOS DE CICLO DE VIDA DO ANDROID
-    * *************************************************************************** */
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        firebaseAuth = FirebaseConnection.getFirebaseAuth();
     }
 
     /* ***************************************************************************
@@ -66,6 +57,7 @@ public class RecuperarActivity extends ComumActivity {
     *                      METODOS DE CICLO DE VIDA DO ANDROID
     * *************************************************************************** */
     public void recuperarAcesso(View view) {
+        initUser();
         firebaseAuth.sendPasswordResetEmail( usuario.getEmail() )
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override

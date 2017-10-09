@@ -18,7 +18,6 @@ import com.google.firebase.crash.FirebaseCrash;
 
 import br.com.bhl.superfid.R;
 import br.com.bhl.superfid.model.Usuario;
-import br.com.bhl.superfid.util.FirebaseConnection;
 
 public class LoginActivity extends ComumActivity {
 
@@ -35,16 +34,12 @@ public class LoginActivity extends ComumActivity {
         setContentView(R.layout.activity_login);
 
         initViews();
-    }
 
-    /* ***************************************************************************
-    *                      METODOS DE CICLO DE VIDA DO ANDROID
-    * *************************************************************************** */
+        firebaseAuth = FirebaseAuth.getInstance();
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        firebaseAuth = FirebaseConnection.getFirebaseAuth();
+        if( firebaseAuth.getCurrentUser() != null ){
+            chamarMainActivity();
+        }
     }
 
     /* ***************************************************************************
@@ -70,6 +65,7 @@ public class LoginActivity extends ComumActivity {
     private void chamarMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+        finish();
     }
 
     public void chamarCadastrarActivity(View view) {

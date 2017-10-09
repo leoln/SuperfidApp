@@ -26,7 +26,6 @@ import java.util.Calendar;
 
 import br.com.bhl.superfid.R;
 import br.com.bhl.superfid.model.Usuario;
-import br.com.bhl.superfid.util.FirebaseConnection;
 import br.com.bhl.superfid.util.Mask;
 
 public class CadastrarActivity extends ComumActivity {
@@ -41,6 +40,7 @@ public class CadastrarActivity extends ComumActivity {
     private EditText edt_senha;
 
     private FirebaseAuth firebaseAuth;
+
     private Usuario usuario;
 
     @Override
@@ -52,16 +52,9 @@ public class CadastrarActivity extends ComumActivity {
         toolbar.setTitle("Cadastro");
         setSupportActionBar(toolbar);
 
-        initViews();
-    }
+        firebaseAuth = FirebaseAuth.getInstance();
 
-    /* ***************************************************************************
-    *                      METODOS DE CICLO DE VIDA DO ANDROID
-    * *************************************************************************** */
-    @Override
-    protected void onStart() {
-        super.onStart();
-        firebaseAuth = FirebaseConnection.getFirebaseAuth();
+        initViews();
     }
 
     /* ***************************************************************************
@@ -142,13 +135,13 @@ public class CadastrarActivity extends ComumActivity {
         firebaseAuth.createUserWithEmailAndPassword(
                 usuario.getEmail(),
                 usuario.getSenha()
-        ).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        ).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if ( task.isSuccessful() ) {
                     closeProgressBar();
                     showToast("Conta criada com sucesso!");
-                    FirebaseConnection.logOut();
+                    firebaseAuth.signOut();
                     finish();
                 } else {
                     closeProgressBar();
