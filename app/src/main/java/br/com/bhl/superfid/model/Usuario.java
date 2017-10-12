@@ -1,48 +1,48 @@
 package br.com.bhl.superfid.model;
 
-import com.google.firebase.database.DatabaseReference;
-
 import java.util.Calendar;
-
-import br.com.bhl.superfid.util.LibraryClass;
-
-/**
- * Created by leonardoln on 12/07/2017.
- */
 
 public class Usuario {
 
-    private String codigo;
+    private long codigoSistema;
+    private String codigoFirebase;
     private String nome;
     private String sobrenome;
-    private long cpf;
+    private Calendar dataNascimento;
+    private String emailFirebase;
+    private long numeroCPF;
     private int ddd;
     private int telefone;
-    private Calendar dataNascimento;
-    private String email;
-    private String senha;
 
     public Usuario() {
     }
 
-    public Usuario(String codigo, String nome, String sobrenome, long cpf, int ddd, int telefone, Calendar dataNascimento, String email, String senha) {
-        this.codigo = codigo;
+    public Usuario(long codigoSistema, String codigoFirebase, String nome, String sobrenome, Calendar dataNascimento, String emailFirebase, long numeroCPF, int ddd, int telefone) {
+        this.codigoSistema = codigoSistema;
+        this.codigoFirebase = codigoFirebase;
         this.nome = nome;
         this.sobrenome = sobrenome;
-        this.cpf = cpf;
+        this.dataNascimento = dataNascimento;
+        this.emailFirebase = emailFirebase;
+        this.numeroCPF = numeroCPF;
         this.ddd = ddd;
         this.telefone = telefone;
-        this.dataNascimento = dataNascimento;
-        this.email = email;
-        this.senha = senha;
     }
 
-    public String getCodigo() {
-        return codigo;
+    public long getCodigoSistema() {
+        return codigoSistema;
     }
 
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
+    public void setCodigoSistema(long codigoSistema) {
+        this.codigoSistema = codigoSistema;
+    }
+
+    public String getCodigoFirebase() {
+        return codigoFirebase;
+    }
+
+    public void setCodigoFirebase(String codigoFirebase) {
+        this.codigoFirebase = codigoFirebase;
     }
 
     public String getNome() {
@@ -61,12 +61,12 @@ public class Usuario {
         this.sobrenome = sobrenome;
     }
 
-    public long getCpf() {
-        return cpf;
+    public long getNumeroCPF() {
+        return numeroCPF;
     }
 
-    public void setCpf(long cpf) {
-        this.cpf = cpf;
+    public void setNumeroCPF(long numeroCPF) {
+        this.numeroCPF = numeroCPF;
     }
 
     public int getDdd() {
@@ -93,30 +93,54 @@ public class Usuario {
         this.dataNascimento = dataNascimento;
     }
 
-    public String getEmail() {
-        return email;
+    public String getEmailFirebase() {
+        return emailFirebase;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setEmailFirebase(String emailFirebase) {
+        this.emailFirebase = emailFirebase;
     }
 
-    public String getSenha() {
-        return senha;
+    @Override
+    public String toString() {
+        return super.toString();
     }
 
-    public void setSenha(String senha) {
-        this.senha = senha;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Usuario)) return false;
+
+        Usuario usuario = (Usuario) o;
+
+        if (getCodigoSistema() != usuario.getCodigoSistema()) return false;
+        if (getNumeroCPF() != usuario.getNumeroCPF()) return false;
+        if (getDdd() != usuario.getDdd()) return false;
+        if (getTelefone() != usuario.getTelefone()) return false;
+        if (getCodigoFirebase() != null ? !getCodigoFirebase().equals(usuario.getCodigoFirebase()) : usuario.getCodigoFirebase() != null)
+            return false;
+        if (getNome() != null ? !getNome().equals(usuario.getNome()) : usuario.getNome() != null)
+            return false;
+        if (getSobrenome() != null ? !getSobrenome().equals(usuario.getSobrenome()) : usuario.getSobrenome() != null)
+            return false;
+        if (getDataNascimento() != null ? !getDataNascimento().equals(usuario.getDataNascimento()) : usuario.getDataNascimento() != null)
+            return false;
+        return getEmailFirebase() != null ? getEmailFirebase().equals(usuario.getEmailFirebase()) : usuario.getEmailFirebase() == null;
+
     }
 
-    public void salvarDatabase(DatabaseReference.CompletionListener... completionListener) {
-        DatabaseReference firebase = LibraryClass.getFirebase().child("users").child(getCodigo());
-
-        if (completionListener.length == 0) {
-            firebase.setValue(this);
-        } else {
-            firebase.setValue(this, completionListener[0]);
-        }
+    @Override
+    public int hashCode() {
+        int result = (int) (getCodigoSistema() ^ (getCodigoSistema() >>> 32));
+        result = 31 * result + (getCodigoFirebase() != null ? getCodigoFirebase().hashCode() : 0);
+        result = 31 * result + (getNome() != null ? getNome().hashCode() : 0);
+        result = 31 * result + (getSobrenome() != null ? getSobrenome().hashCode() : 0);
+        result = 31 * result + (getDataNascimento() != null ? getDataNascimento().hashCode() : 0);
+        result = 31 * result + (getEmailFirebase() != null ? getEmailFirebase().hashCode() : 0);
+        result = 31 * result + (int) (getNumeroCPF() ^ (getNumeroCPF() >>> 32));
+        result = 31 * result + getDdd();
+        result = 31 * result + getTelefone();
+        return result;
     }
 
     public static String tirarCaracteresEspeciais( String texto ) {

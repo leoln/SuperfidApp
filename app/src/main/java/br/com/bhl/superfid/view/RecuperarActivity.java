@@ -2,11 +2,9 @@ package br.com.bhl.superfid.view;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -15,12 +13,17 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.crash.FirebaseCrash;
 
 import br.com.bhl.superfid.R;
+import br.com.bhl.superfid.model.Usuario;
 
-public class RecuperarActivity extends AppCompatActivity {
+
+public class RecuperarActivity extends ComumActivity {
 
     private Toolbar toolbar;
     private AutoCompleteTextView email;
+
     private FirebaseAuth firebaseAuth;
+
+    private Usuario usuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,47 +34,47 @@ public class RecuperarActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         firebaseAuth = FirebaseAuth.getInstance();
+
+        initViews();
+    }
+
+    /* ***************************************************************************
+    *                      METODOS DE CICLO DE VIDA DO ANDROID
+    * *************************************************************************** */
+    @Override
+    protected void initUser() {
+        usuario = new Usuario();
+        usuario.setEmailFirebase(email.getText().toString());
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        init();
-    }
-
-    private void init() {
+    protected void initViews() {
         toolbar.setTitle(getResources().getString(R.string.lbl_recuperar));
         email = (AutoCompleteTextView) findViewById(R.id.email);
     }
 
+    /* ***************************************************************************
+    *                      METODOS DE CICLO DE VIDA DO ANDROID
+    * *************************************************************************** */
     public void recuperarAcesso(View view) {
-        firebaseAuth
-                .sendPasswordResetEmail(email.getText().toString())
+        initUser();
+        firebaseAuth.sendPasswordResetEmail( usuario.getEmailFirebase() )
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            email.setText("");
-                            Toast.makeText(
-                                    RecuperarActivity.this,
-                                    "Recuperação de acesso iniciada. Email enviado.",
-                                    Toast.LENGTH_SHORT
-                            ).show();
-                        } else {
-                            Toast.makeText(
-                                    RecuperarActivity.this,
-                                    "Falhou! Tente novamente",
-                                    Toast.LENGTH_SHORT
-                            ).show();
-                        }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        FirebaseCrash.report(e);
-                    }
-                });
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    email.setText("");
+                    showToast("Recuperação de acesso iniciada. Email enviado.");
+                } else {
+                    showToast("Falhou! Tente novamente");
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                FirebaseCrash.report(e);
+            }
+        });
     }
 
 } // fim da classe

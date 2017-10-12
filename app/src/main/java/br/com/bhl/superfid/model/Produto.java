@@ -1,25 +1,49 @@
 package br.com.bhl.superfid.model;
 
-/**
- * Created by hericles on 28/05/17.
- */
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 public class Produto {
 
+    private long codigo;
     private String descricao;
-    private double precoUnitario;
     private String marca;
-    private String validade;
-    private String lote;
-    private double unidades;
+    private double precoUnitario;
+    private String dataValidade;
+    private String codigoLote;
+    private String unidade;
+    private String urlImagem;
 
-    public Produto(String descricao, double precoUnitario, String marca, String validade, String lote, double unidades) {
+    public Produto() { }
+
+    public Produto(long codProduto, String descricao, String marca, double precoUnitario, String validade, String codigoLote, String unidades, String urlImagem) {
+        this.codigo = codProduto;
         this.descricao = descricao;
         this.precoUnitario = precoUnitario;
         this.marca = marca;
-        this.validade = validade;
-        this.lote = lote;
-        this.unidades = unidades;
+        this.dataValidade = validade;
+        this.codigoLote = codigoLote;
+        this.unidade = unidades;
+        this.urlImagem= urlImagem;
+    }
+
+    public Produto(String descricao, String marca, double precoUnitario, String dataValidade, String codigoLote, String unidades, String urlImagem) {
+        this.descricao = descricao;
+        this.precoUnitario = precoUnitario;
+        this.marca = marca;
+        this.dataValidade = dataValidade;
+        this.codigoLote = codigoLote;
+        this.unidade = unidades;
+        this.urlImagem= urlImagem;
+    }
+
+    public long getCodProduto() {
+        return codigo;
+    }
+
+    public void setCodProduto(long codProduto) {
+        this.codigo = codProduto;
     }
 
     public String getDescricao() {
@@ -46,28 +70,106 @@ public class Produto {
         this.marca = marca;
     }
 
-    public String getValidade() {
-        return validade;
+    public String getDataValidade() {
+        return dataValidade;
     }
 
-    public void setValidade(String validade) {
-        this.validade = validade;
+    public void setDataValidade(Date dataValidade) {
+        DateFormat dataFormatada = new SimpleDateFormat("dd/MM/yyyy");
+        this.dataValidade = dataFormatada.format(dataValidade);
     }
 
     public String getLote() {
-        return lote;
+        return codigoLote;
     }
 
-    public void setLote(String lote) {
-        this.lote = lote;
+    public void setLote(String codigoLote) {
+        this.codigoLote = codigoLote;
     }
 
-    public double getUnidades() {
-        return unidades;
+    public String getUnidades() {
+        return unidade;
     }
 
-    public void setUnidades(double unidades) {
-        this.unidades = unidades;
+    public void setUnidades(String unidades) {
+        this.unidade = unidades;
     }
 
+    public String getUrlImagem() {
+        return urlImagem;
+    }
+
+    public void setUrlImagem(String urlImagem) {
+        this.urlImagem = urlImagem;
+    }
+
+    @Override
+    public String toString() {
+        return "Produto [codProduto=" + codigo + ", descricao=" + descricao + ", precoUnitario=" + precoUnitario
+                + ", marca=" + marca + ", validade=" + dataValidade + ", codigoLote=" + codigoLote + ", unidade=" + unidade
+                + ", urlImagem=" + urlImagem + "]";
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (int) (codigo ^ (codigo >>> 32));
+        result = prime * result + ((descricao == null) ? 0 : descricao.hashCode());
+        result = prime * result + ((codigoLote == null) ? 0 : codigoLote.hashCode());
+        result = prime * result + ((marca == null) ? 0 : marca.hashCode());
+        long temp;
+        temp = Double.doubleToLongBits(precoUnitario);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        result = prime * result + ((unidade == null) ? 0 : unidade.hashCode());
+        result = prime * result + ((urlImagem == null) ? 0 : urlImagem.hashCode());
+        result = prime * result + ((dataValidade == null) ? 0 : dataValidade.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Produto other = (Produto) obj;
+        if (codigo != other.codigo)
+            return false;
+        if (descricao == null) {
+            if (other.descricao != null)
+                return false;
+        } else if (!descricao.equals(other.descricao))
+            return false;
+        if (codigoLote == null) {
+            if (other.codigoLote != null)
+                return false;
+        } else if (!codigoLote.equals(other.codigoLote))
+            return false;
+        if (marca == null) {
+            if (other.marca != null)
+                return false;
+        } else if (!marca.equals(other.marca))
+            return false;
+        if (Double.doubleToLongBits(precoUnitario) != Double.doubleToLongBits(other.precoUnitario))
+            return false;
+        if (unidade == null) {
+            if (other.unidade != null)
+                return false;
+        } else if (!unidade.equals(other.unidade))
+            return false;
+        if (urlImagem == null) {
+            if (other.urlImagem != null)
+                return false;
+        } else if (!urlImagem.equals(other.urlImagem))
+            return false;
+        if (dataValidade == null) {
+            if (other.dataValidade != null)
+                return false;
+        } else if (!dataValidade.equals(other.dataValidade))
+            return false;
+        return true;
+    }
 }

@@ -1,8 +1,17 @@
 package br.com.bhl.superfid.view;
 
-/**
- * Created by hericlespontes on 24/09/17.
- */
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 
-public class ComprasActivity {
+import br.com.bhl.superfid.R;
+
+public class ComprasActivity extends AppCompatActivity{
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_compras);
+
+    }
 }

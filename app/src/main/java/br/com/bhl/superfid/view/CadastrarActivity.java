@@ -18,10 +18,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.crash.FirebaseCrash;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,9 +26,9 @@ import java.util.Calendar;
 
 import br.com.bhl.superfid.R;
 import br.com.bhl.superfid.model.Usuario;
-import br.com.bhl.superfid.util.Mask;
+import br.com.bhl.superfid.util.MaskUtil;
 
-public class CadastrarActivity extends ComumActivity implements DatabaseReference.CompletionListener {
+public class CadastrarActivity extends ComumActivity {
 
     private AutoCompleteTextView edt_nome;
     private AutoCompleteTextView edt_sobrenome;
@@ -41,10 +38,9 @@ public class CadastrarActivity extends ComumActivity implements DatabaseReferenc
     private EditText edt_dtnascimento;
     private AutoCompleteTextView edt_email;
     private EditText edt_senha;
-    private Toolbar toolbar;
 
-    private FirebaseAuth myAuth;
-    private FirebaseAuth.AuthStateListener myAuthStateListener;
+    private FirebaseAuth firebaseAuth;
+
     private Usuario usuario;
 
     @Override
@@ -52,61 +48,24 @@ public class CadastrarActivity extends ComumActivity implements DatabaseReferenc
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastrar);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Cadastro");
         setSupportActionBar(toolbar);
 
-        myAuth = FirebaseAuth.getInstance();
-
-        myAuthStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-
-                if (firebaseUser == null || usuario.getCodigo() != null) {
-                    return;
-                }
-
-                usuario.setCodigo(firebaseUser.getUid());
-                usuario.salvarDatabase(CadastrarActivity.this);
-            }
-        };
+        firebaseAuth = FirebaseAuth.getInstance();
 
         initViews();
     }
 
-    /**********************************************************************************
-     *********************************************************************************/
+    /* ***************************************************************************
+    *                       METODOS HERDADOS DA CLASSE PAI
+    * *************************************************************************** */
     @Override
-    protected void onStart() {
-        super.onStart();
-        myAuth.addAuthStateListener(myAuthStateListener);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (myAuthStateListener != null) {
-            myAuth.removeAuthStateListener(myAuthStateListener);
-        }
-    }
-
-    @Override
-    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-        myAuth.signOut();
-
-        showToast("Conta criada com sucesso!");
-        closeProgressBar();
-        finish();
-    }
-
-    /**********************************************************************************
-     *********************************************************************************/
     protected void initViews() {
         edt_nome = (AutoCompleteTextView) findViewById(R.id.edt_nome);
         edt_sobrenome = (AutoCompleteTextView) findViewById(R.id.edt_sobrenome);
         edt_cpf = (AutoCompleteTextView) findViewById(R.id.edt_cpf);
-        edt_cpf.addTextChangedListener(Mask.insert("###.###.###-##", edt_cpf));
+        edt_cpf.addTextChangedListener(MaskUtil.insert("###.###.###-##", edt_cpf));
         edt_ddd = (EditText) findViewById(R.id.edt_ddd);
         edt_telefone = (EditText) findViewById(R.id.edt_telefone);
         edt_dtnascimento = (EditText) findViewById(R.id.edt_dtnascimento);
@@ -115,28 +74,29 @@ public class CadastrarActivity extends ComumActivity implements DatabaseReferenc
         progressBar = (ProgressBar) findViewById(R.id.cadastrar_progressbar);
     }
 
+    @Override
     protected void initUser() {
-        usuario = new Usuario(  );
+        usuario = new Usuario();
 
-        usuario.setNome( edt_nome.getText().toString() );
-        usuario.setSobrenome( edt_sobrenome.getText().toString() );
+        usuario.setNome(edt_nome.getText().toString());
+        usuario.setSobrenome(edt_sobrenome.getText().toString());
 
-        if(!TextUtils.isEmpty(edt_cpf.getText().toString())) {
-            usuario.setCpf(Long.parseLong( Usuario.tirarCaracteresEspeciais( edt_cpf.getText().toString() ) ) );
+        if (!TextUtils.isEmpty(edt_cpf.getText().toString())) {
+            usuario.setNumeroCPF(Long.parseLong(Usuario.tirarCaracteresEspeciais(edt_cpf.getText().toString())));
         } else {
-            usuario.setCpf( 0 );
+            usuario.setNumeroCPF(0);
         }
 
-        if(!TextUtils.isEmpty(edt_ddd.getText().toString())) {
+        if (!TextUtils.isEmpty(edt_ddd.getText().toString())) {
             usuario.setDdd(Integer.parseInt(edt_ddd.getText().toString()));
         } else {
-            usuario.setDdd( 0 );
+            usuario.setDdd(0);
         }
 
-        if(!TextUtils.isEmpty(edt_telefone.getText().toString())) {
+        if (!TextUtils.isEmpty(edt_telefone.getText().toString())) {
             usuario.setTelefone(Integer.parseInt(edt_telefone.getText().toString()));
         } else {
-            usuario.setTelefone( 0 );
+            usuario.setTelefone(0);
         }
 
         if (!TextUtils.isEmpty(edt_dtnascimento.getText().toString())) {
@@ -149,41 +109,46 @@ public class CadastrarActivity extends ComumActivity implements DatabaseReferenc
                 e.printStackTrace();
             }
         } else {
-            edt_dtnascimento.setText( null );
+            edt_dtnascimento.setText(null);
         }
 
-        usuario.setEmail(edt_email.getText().toString());
-        usuario.setSenha(edt_senha.getText().toString());
-
+        usuario.setEmailFirebase(edt_email.getText().toString());
     }
 
-    /**********************************************************************************
-     *********************************************************************************/
+    /* ***************************************************************************
+    *                      METODOS DE
+    * *************************************************************************** */
     public void enviarDadosCadastro(View view) {
         initUser();
-        cadastrarUsuario();
+        criarUsuario();
     }
 
-    private void cadastrarUsuario() {
+    private void criarUsuario() {
 
-        if (!validarForm()) {
+        if (!validarFormulario()) {
             return;
         }
 
         openProgressBar();
 
-        myAuth.createUserWithEmailAndPassword(
-                usuario.getEmail(),
-                usuario.getSenha()
-        ).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
+        String senha = edt_senha.getText().toString();
 
-                if (!task.isSuccessful()) {
-                    closeProgressBar();
-                }
-            }
-        }).addOnFailureListener(this, new OnFailureListener() {
+        firebaseAuth.createUserWithEmailAndPassword(usuario.getEmailFirebase(), senha)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            closeProgressBar();
+                            showToast("Conta criada com sucesso!");
+                            firebaseAuth.signOut();
+                            finish();
+                        } else {
+                            closeProgressBar();
+                            showToast("Falha ao criar usuário.");
+                        }
+
+                    }
+                }).addOnFailureListener(this, new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 FirebaseCrash.report(e);
@@ -192,7 +157,7 @@ public class CadastrarActivity extends ComumActivity implements DatabaseReferenc
         });
     }
 
-    private boolean validarForm() {
+    private boolean validarFormulario() {
         boolean valido = true;
 
         String nome = edt_nome.getText().toString();
@@ -250,7 +215,7 @@ public class CadastrarActivity extends ComumActivity implements DatabaseReferenc
         }
 
         public void onDateSet(DatePicker view, int year, int month, int day) {
-            EditText edt_dtnascimento = (EditText) getActivity().findViewById(R.id.edt_dtnascimento);
+            EditText edt_dtnascimento = getActivity().findViewById(R.id.edt_dtnascimento);
             SimpleDateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy");
 
             Calendar data = Calendar.getInstance();
@@ -260,4 +225,4 @@ public class CadastrarActivity extends ComumActivity implements DatabaseReferenc
         }
     }
 
-}//fim da classe
+}
