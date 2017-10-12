@@ -1,8 +1,9 @@
 package br.com.bhl.superfid.model;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
-public class Usuario {
+public class Usuario implements Serializable{
 
     private long codigoSistema;
     private String codigoFirebase;
@@ -14,20 +15,7 @@ public class Usuario {
     private int ddd;
     private int telefone;
 
-    public Usuario() {
-    }
-
-    public Usuario(long codigoSistema, String codigoFirebase, String nome, String sobrenome, Calendar dataNascimento, String emailFirebase, long numeroCPF, int ddd, int telefone) {
-        this.codigoSistema = codigoSistema;
-        this.codigoFirebase = codigoFirebase;
-        this.nome = nome;
-        this.sobrenome = sobrenome;
-        this.dataNascimento = dataNascimento;
-        this.emailFirebase = emailFirebase;
-        this.numeroCPF = numeroCPF;
-        this.ddd = ddd;
-        this.telefone = telefone;
-    }
+    public Usuario() { }
 
     public long getCodigoSistema() {
         return codigoSistema;

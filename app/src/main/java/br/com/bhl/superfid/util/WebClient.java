@@ -3,10 +3,8 @@ package br.com.bhl.superfid.util;
 import java.io.IOException;
 import java.net.URL;
 
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class WebClient {
@@ -34,9 +32,9 @@ public class WebClient {
         return jsonDeResposta;
     }*/
 
-    public String get(long codigo) throws IOException {
+    public String get(String rfid) throws IOException {
 
-        URL url = new URL("https://superfidweb.herokuapp.com/produto/parseJson?codigo=" + codigo);
+        URL url = new URL("https://superfidweb.herokuapp.com/produto/parseJson?rfid=" + rfid);
 
         OkHttpClient client = new OkHttpClient();
 
