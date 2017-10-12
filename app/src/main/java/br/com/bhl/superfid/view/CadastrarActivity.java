@@ -26,7 +26,7 @@ import java.util.Calendar;
 
 import br.com.bhl.superfid.R;
 import br.com.bhl.superfid.model.Usuario;
-import br.com.bhl.superfid.util.Mask;
+import br.com.bhl.superfid.util.MaskUtil;
 
 public class CadastrarActivity extends ComumActivity {
 
@@ -65,7 +65,7 @@ public class CadastrarActivity extends ComumActivity {
         edt_nome = (AutoCompleteTextView) findViewById(R.id.edt_nome);
         edt_sobrenome = (AutoCompleteTextView) findViewById(R.id.edt_sobrenome);
         edt_cpf = (AutoCompleteTextView) findViewById(R.id.edt_cpf);
-        edt_cpf.addTextChangedListener(Mask.insert("###.###.###-##", edt_cpf));
+        edt_cpf.addTextChangedListener(MaskUtil.insert("###.###.###-##", edt_cpf));
         edt_ddd = (EditText) findViewById(R.id.edt_ddd);
         edt_telefone = (EditText) findViewById(R.id.edt_telefone);
         edt_dtnascimento = (EditText) findViewById(R.id.edt_dtnascimento);
@@ -82,9 +82,9 @@ public class CadastrarActivity extends ComumActivity {
         usuario.setSobrenome(edt_sobrenome.getText().toString());
 
         if (!TextUtils.isEmpty(edt_cpf.getText().toString())) {
-            usuario.setCpf(Long.parseLong(Usuario.tirarCaracteresEspeciais(edt_cpf.getText().toString())));
+            usuario.setNumeroCPF(Long.parseLong(Usuario.tirarCaracteresEspeciais(edt_cpf.getText().toString())));
         } else {
-            usuario.setCpf(0);
+            usuario.setNumeroCPF(0);
         }
 
         if (!TextUtils.isEmpty(edt_ddd.getText().toString())) {
@@ -100,56 +100,55 @@ public class CadastrarActivity extends ComumActivity {
         }
 
         if (!TextUtils.isEmpty(edt_dtnascimento.getText().toString())) {
-            SimpleDateFormat formatoData = new SimpleDateFormat( "dd/MM/yyyy" );
+            SimpleDateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy");
             try {
                 Calendar data = Calendar.getInstance();
-                data.setTime( formatoData.parse( edt_dtnascimento.getText().toString() ));
-                usuario.setDataNascimento( data );
+                data.setTime(formatoData.parse(edt_dtnascimento.getText().toString()));
+                usuario.setDataNascimento(data);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
         } else {
-            edt_dtnascimento.setText( null );
+            edt_dtnascimento.setText(null);
         }
 
-        usuario.setEmail( edt_email.getText().toString() );
-        usuario.setSenha( edt_senha.getText().toString() );
+        usuario.setEmailFirebase(edt_email.getText().toString());
     }
 
     /* ***************************************************************************
     *                      METODOS DE
     * *************************************************************************** */
-    public void enviarDadosCadastro( View view ) {
+    public void enviarDadosCadastro(View view) {
         initUser();
         criarUsuario();
     }
 
     private void criarUsuario() {
 
-        if ( !validarFormulario() ) {
+        if (!validarFormulario()) {
             return;
         }
 
         openProgressBar();
 
-        firebaseAuth.createUserWithEmailAndPassword(
-                usuario.getEmail(),
-                usuario.getSenha()
-        ).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if ( task.isSuccessful() ) {
-                    closeProgressBar();
-                    showToast("Conta criada com sucesso!");
-                    firebaseAuth.signOut();
-                    finish();
-                } else {
-                    closeProgressBar();
-                    showToast("Falha ao criar usuário.");
-                }
+        String senha = edt_senha.getText().toString();
 
-            }
-        }).addOnFailureListener(this, new OnFailureListener() {
+        firebaseAuth.createUserWithEmailAndPassword(usuario.getEmailFirebase(), senha)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            closeProgressBar();
+                            showToast("Conta criada com sucesso!");
+                            firebaseAuth.signOut();
+                            finish();
+                        } else {
+                            closeProgressBar();
+                            showToast("Falha ao criar usuário.");
+                        }
+
+                    }
+                }).addOnFailureListener(this, new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 FirebaseCrash.report(e);
@@ -162,67 +161,67 @@ public class CadastrarActivity extends ComumActivity {
         boolean valido = true;
 
         String nome = edt_nome.getText().toString();
-        if (TextUtils.isEmpty( nome )) {
-            edt_nome.setError( "Obrigatório" );
+        if (TextUtils.isEmpty(nome)) {
+            edt_nome.setError("Obrigatório");
             valido = false;
         } else {
             edt_nome.setError(null);
         }
 
         String cpf = edt_cpf.getText().toString();
-        if (TextUtils.isEmpty( cpf )) {
-            edt_cpf.setError( "Obrigatório" );
+        if (TextUtils.isEmpty(cpf)) {
+            edt_cpf.setError("Obrigatório");
             valido = false;
         } else {
-            edt_cpf.setError( null );
+            edt_cpf.setError(null);
         }
 
         String email = edt_email.getText().toString();
         if (TextUtils.isEmpty(email)) {
-            edt_email.setError( "Obrigatório" );
+            edt_email.setError("Obrigatório");
             valido = false;
         } else {
-            edt_email.setError( null );
+            edt_email.setError(null);
         }
 
         String senha = edt_senha.getText().toString();
         if (TextUtils.isEmpty(senha)) {
-            edt_senha.setError( "Obrigatório" );
+            edt_senha.setError("Obrigatório");
             valido = false;
         } else {
-            edt_senha.setError( null );
+            edt_senha.setError(null);
         }
 
         return valido;
     }
 
-    public void showDatePicker( View v ) {
+    public void showDatePicker(View v) {
         DialogFragment newFragment = new DatePickerFragment();
-        newFragment.show( getSupportFragmentManager(), "datePicker" );
+        newFragment.show(getSupportFragmentManager(), "datePicker");
     }
 
     public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
         @NonNull
         @Override
-        public Dialog onCreateDialog( Bundle savedInstanceState ) {
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
 
             final Calendar c = Calendar.getInstance();
             int year = c.get(Calendar.YEAR);
             int month = c.get(Calendar.MONTH);
             int day = c.get(Calendar.DAY_OF_MONTH);
 
-            return new DatePickerDialog( getActivity(), this, year, month, day );
+            return new DatePickerDialog(getActivity(), this, year, month, day);
         }
 
         public void onDateSet(DatePicker view, int year, int month, int day) {
-            EditText edt_dtnascimento = getActivity().findViewById( R.id.edt_dtnascimento );
-            SimpleDateFormat formatoData = new SimpleDateFormat( "dd/MM/yyyy" );
+            EditText edt_dtnascimento = getActivity().findViewById(R.id.edt_dtnascimento);
+            SimpleDateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy");
 
             Calendar data = Calendar.getInstance();
-            data.set( year, month, day );
+            data.set(year, month, day);
 
-            edt_dtnascimento.setText( formatoData.format( data.getTime() ));
+            edt_dtnascimento.setText(formatoData.format(data.getTime()));
         }
     }
 

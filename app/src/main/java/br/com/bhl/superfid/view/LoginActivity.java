@@ -37,7 +37,7 @@ public class LoginActivity extends ComumActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        if( firebaseAuth.getCurrentUser() != null ){
+        if (firebaseAuth.getCurrentUser() != null) {
             chamarMainActivity();
         }
     }
@@ -55,8 +55,7 @@ public class LoginActivity extends ComumActivity {
     @Override
     protected void initUser() {
         usuario = new Usuario();
-        usuario.setEmail(edt_email.getText().toString());
-        usuario.setSenha(edt_senha.getText().toString());
+        usuario.setEmailFirebase(edt_email.getText().toString());
     }
 
     /* ***************************************************************************
@@ -92,22 +91,22 @@ public class LoginActivity extends ComumActivity {
         openProgressBar();
         initUser();
 
+        String email = edt_email.getText().toString();
+        String senha = edt_senha.getText().toString();
+
         FirebaseCrash.log("LoginActivity:signIn()");
-        firebaseAuth.signInWithEmailAndPassword(
-                usuario.getEmail(),
-                usuario.getSenha()
-        ).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    closeProgressBar();
-                    chamarMainActivity();
-                } else {
-                    closeProgressBar();
-                    showSnackbar("Login falhou");
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
+        firebaseAuth.signInWithEmailAndPassword(email, senha)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            chamarMainActivity();
+                        } else {
+                            showSnackbar("Login falhou");
+                        }
+                        closeProgressBar();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 FirebaseCrash.report(e);

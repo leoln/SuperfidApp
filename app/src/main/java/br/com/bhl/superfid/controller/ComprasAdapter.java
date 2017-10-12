@@ -45,7 +45,7 @@ public class ComprasAdapter extends RecyclerView.Adapter {
         holder.descricao.setText(produto.getDescricao());
         holder.precoUnitario.setText("" + produto.getPrecoUnitario());
         holder.unidades.setText("" + produto.getUnidades());
-        holder.validade.setText("" + produto.getValidade());
+        holder.validade.setText("" + produto.getDataValidade());
     }
 
     @Override

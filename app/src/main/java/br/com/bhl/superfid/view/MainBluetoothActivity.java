@@ -197,7 +197,8 @@ public class MainBluetoothActivity extends AppCompatActivity {
                     codigoRecebido = codigoRecebido.replace("$", "");
                     codigoRecebido = codigoRecebido.replace("\n","");
 
-                    produtos.add(new Produto(codigoRecebido, 4.70, "C", "23/10/2018", "L4052", 1.0));
+                    //produtos.add(new Produto(codigoRecebido, 4.70, "C", "23/10/2018", "L4052", 1.0));
+
                     recyclerView.getAdapter().notifyDataSetChanged();
                     recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount());
 

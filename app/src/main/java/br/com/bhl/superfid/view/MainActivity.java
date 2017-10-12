@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -17,9 +18,10 @@ import com.journeyapps.barcodescanner.CaptureActivity;
 
 import br.com.bhl.superfid.R;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends ComumActivity {
 
     private Toolbar toolbar;
+    private TextView txtNomeProduto;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
@@ -34,6 +36,19 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         firebaseAuth = FirebaseAuth.getInstance();
+
+    }
+
+    /* ***************************************************************************
+    *                      METODOS DE CICLO DE VIDA DO ANDROID
+    * *************************************************************************** */
+    @Override
+    protected void initViews() {
+
+    }
+
+    @Override
+    protected void initUser() {
 
     }
 
