@@ -1,7 +1,6 @@
 package br.com.bhl.superfid.view;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -81,9 +80,10 @@ public class MainActivity extends ComumActivity {
             if (result.getContents() == null) {
                 Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
             } else {
-                Intent it = new Intent(this, MainBluetoothActivity.class);
+                Intent it = new Intent(MainActivity.this, MainBluetoothActivity.class);
                 it.putExtra("qrResult", result.getContents());
                 startActivity(it);
+                finish();
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);

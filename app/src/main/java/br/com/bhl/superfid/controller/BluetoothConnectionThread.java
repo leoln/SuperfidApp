@@ -17,8 +17,6 @@ import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.UUID;
 
-import br.com.bhl.superfid.view.ParearBluetoothActivity;
-
 public class BluetoothConnectionThread extends Thread {
 
     private BluetoothSocket btSocket = null;
@@ -218,7 +216,7 @@ public class BluetoothConnectionThread extends Thread {
         Bundle bundle = new Bundle();
         bundle.putByteArray("data", data);
         message.setData(bundle);
-        ParearBluetoothActivity.handler.sendMessage(message);
+        //ParearBluetoothActivity.handler.sendMessage(message);
     }
 
     /*  Método utilizado pela Activity principal para transmitir uma mensagem ao

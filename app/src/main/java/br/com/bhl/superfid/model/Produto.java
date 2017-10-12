@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 public class Produto {
 
     private long codigo;
+    private String codigoRfid;
     private String descricao;
     private String marca;
     private double precoUnitario;
@@ -17,8 +18,9 @@ public class Produto {
 
     public Produto() { }
 
-    public Produto(long codProduto, String descricao, String marca, double precoUnitario, String validade, String codigoLote, String unidades, String urlImagem) {
+    public Produto(long codProduto, String codigoRfid, String descricao, String marca, double precoUnitario, String validade, String codigoLote, String unidades, String urlImagem) {
         this.codigo = codProduto;
+        this.codigoRfid = codigoRfid;
         this.descricao = descricao;
         this.precoUnitario = precoUnitario;
         this.marca = marca;
@@ -28,7 +30,8 @@ public class Produto {
         this.urlImagem= urlImagem;
     }
 
-    public Produto(String descricao, String marca, double precoUnitario, String dataValidade, String codigoLote, String unidades, String urlImagem) {
+    public Produto(String codigoRfid, String descricao, String marca, double precoUnitario, String dataValidade, String codigoLote, String unidades, String urlImagem) {
+        this.codigoRfid = codigoRfid;
         this.descricao = descricao;
         this.precoUnitario = precoUnitario;
         this.marca = marca;
@@ -44,6 +47,14 @@ public class Produto {
 
     public void setCodProduto(long codProduto) {
         this.codigo = codProduto;
+    }
+
+    public String getCodRfid() {
+        return codigoRfid;
+    }
+
+    public void setCodRfid(String codigoRfid) {
+        this.codigoRfid = codigoRfid;
     }
 
     public String getDescricao() {
