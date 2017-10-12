@@ -1,12 +1,17 @@
 package br.com.bhl.superfid.view;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +19,7 @@ import br.com.bhl.superfid.R;
 import br.com.bhl.superfid.controller.ComprasAdapter;
 import br.com.bhl.superfid.controller.DividerItemDecoration;
 import br.com.bhl.superfid.model.Produto;
+import br.com.bhl.superfid.util.WebClient;
 
 public class ComprasActivity extends AppCompatActivity{
 
@@ -40,19 +46,55 @@ public class ComprasActivity extends AppCompatActivity{
     }
 
     public static void addProduto(String codigoRecebido){
-        Produto p = new Produto(codigoRecebido, "D:"+codigoRecebido, "Marca", 4.70, "23/10/2018", "L4052", "1", "");
-        produtos.add(p);
 
-        recyclerView.getAdapter().notifyDataSetChanged();
-        recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount());
+        GetJson getJson = new GetJson();
+        getJson.execute(codigoRecebido);
 
-        //Atualiza subTotal
-        String tempSubTotal = subTotal.getText().toString();
 
-        if(tempSubTotal.startsWith("R")){
-            subTotal.setText("0");
+    }
+
+    private static class GetJson extends AsyncTask<String, Void, Produto> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
         }
-        subTotalDouble = (p.getPrecoUnitario()*Double.parseDouble(p.getUnidades())) + Double.parseDouble(subTotal.getText().toString());
-        subTotal.setText(subTotalDouble+"");
+
+        @Override
+        protected Produto doInBackground(String... strings) {
+            Produto produto = null;
+            Gson gson = new Gson();
+            String json = "";
+            WebClient webClient = new WebClient();
+
+            try {
+                json = webClient.get(strings[0]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            produto = gson.fromJson(json, Produto.class);
+
+            return produto;
+        }
+
+        @Override
+        protected void onPostExecute(Produto produto) {
+            super.onPostExecute(produto);
+
+            produtos.add(produto);
+
+            recyclerView.getAdapter().notifyDataSetChanged();
+            recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount());
+
+            if( !produtos.isEmpty() ) {
+                for (Produto produtoEach : produtos) {
+                    subTotalDouble = ( produtoEach.getPrecoUnitario() * produto.getUnidade() ) + Double.parseDouble(subTotal.getText().toString());
+                }
+            }
+
+            subTotal.setText(subTotalDouble + "");
+        }
     }
 }
