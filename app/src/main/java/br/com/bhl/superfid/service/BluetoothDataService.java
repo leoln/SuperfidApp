@@ -29,7 +29,7 @@ import br.com.bhl.superfid.view.MainBluetoothActivity;
 
 public class BluetoothDataService extends Service {
 
-    private String codigoRecebido;
+    private String codigoRecebido = "";
     final int handlerState = 0;                        //used to identify handler message
     Handler bluetoothIn;
     private BluetoothAdapter btAdapter = null;
@@ -109,6 +109,7 @@ public class BluetoothDataService extends Service {
                     if(codigoRecebido.contains("$")){
                         codigoRecebido = codigoRecebido.replace("#", "");
                         codigoRecebido = codigoRecebido.replace("$", "");
+                        codigoRecebido = codigoRecebido.replace(" ", "");
                         codigoRecebido = codigoRecebido.replace("\n","");
 
                         //adicionar produto
