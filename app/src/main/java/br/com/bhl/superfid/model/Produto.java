@@ -1,10 +1,11 @@
 package br.com.bhl.superfid.model;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-public class Produto {
+public class Produto implements Serializable {
 
     private long codigo;
     private String codigoRfid;

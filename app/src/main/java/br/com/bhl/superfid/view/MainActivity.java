@@ -20,7 +20,6 @@ import br.com.bhl.superfid.R;
 public class MainActivity extends ComumActivity {
 
     private Toolbar toolbar;
-    private TextView txtNomeProduto;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
@@ -30,7 +29,7 @@ public class MainActivity extends ComumActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         toolbar.setTitle("Seja bem-vindo " /*+ firebaseUser.getDisplayName() + "!"*/);
         setSupportActionBar(toolbar);
 
@@ -43,7 +42,7 @@ public class MainActivity extends ComumActivity {
     * *************************************************************************** */
     @Override
     protected void initViews() {
-
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
     }
 
     @Override
@@ -80,7 +79,7 @@ public class MainActivity extends ComumActivity {
             if (result.getContents() == null) {
                 Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
             } else {
-                Intent it = new Intent(MainActivity.this, MainBluetoothActivity.class);
+                Intent it = new Intent(this, MainBluetoothActivity.class);
                 it.putExtra("qrResult", result.getContents());
                 startActivity(it);
                 finish();
