@@ -29,6 +29,7 @@ public class MainActivity extends ComumActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initViews();
 
         toolbar.setTitle("Seja bem-vindo " /*+ firebaseUser.getDisplayName() + "!"*/);
         setSupportActionBar(toolbar);
