@@ -17,9 +17,9 @@ import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.UUID;
 
-import br.com.bhl.superfid.view.MainBluetoothActivity;
+import br.com.bhl.superfid.view.ParearBluetoothActivity;
 
-public class ConnectionThread extends Thread {
+public class BluetoothConnectionThread extends Thread {
 
     private BluetoothSocket btSocket = null;
     private BluetoothServerSocket btServerSocket = null;
@@ -37,7 +37,7 @@ public class ConnectionThread extends Thread {
 
     /*  Este construtor prepara o dispositivo para atuar como servidor.
      */
-    public ConnectionThread() {
+    public BluetoothConnectionThread() {
 
         this.server = true;
     }
@@ -46,7 +46,7 @@ public class ConnectionThread extends Thread {
         Tem como argumento uma string contendo o endereço MAC do dispositivo
     Bluetooth para o qual deve ser solicitada uma conexão.
      */
-    public ConnectionThread(String btDevAddress, String btDevPwd) {
+    public BluetoothConnectionThread(String btDevAddress, String btDevPwd) {
 
         this.server = false;
         this.btDevAddress = btDevAddress;
@@ -218,7 +218,7 @@ public class ConnectionThread extends Thread {
         Bundle bundle = new Bundle();
         bundle.putByteArray("data", data);
         message.setData(bundle);
-        MainBluetoothActivity.handler.sendMessage(message);
+        ParearBluetoothActivity.handler.sendMessage(message);
     }
 
     /*  Método utilizado pela Activity principal para transmitir uma mensagem ao

@@ -21,21 +21,21 @@ import java.util.List;
 import br.com.bhl.superfid.controller.ComprasAdapter;
 import br.com.bhl.superfid.controller.DividerItemDecoration;
 import br.com.bhl.superfid.R;
-import br.com.bhl.superfid.controller.ConnectionThread;
+import br.com.bhl.superfid.controller.BluetoothConnectionThread;
 import br.com.bhl.superfid.model.Produto;
 
 /**
  * Created by hericlespontes on 16/07/17.
  */
 
-public class MainBluetoothActivity extends AppCompatActivity {
+public class ParearBluetoothActivity extends AppCompatActivity {
 
     public static final int ENABLE_BLUETOOTH = 1;
     public static RecyclerView recyclerView;
     public static List<Produto> produtos = new ArrayList<>();
     public static String codigoRecebido = "";
 
-    private static ConnectionThread connect;
+    private static BluetoothConnectionThread connect;
     private String macAddress, ssId, password;
 
     @Override
@@ -85,7 +85,7 @@ public class MainBluetoothActivity extends AppCompatActivity {
                 //statusMessage.setText("Bluetooth já ativado :)");
 
                 //conecta no carrinho se ja esta ativado o BT
-                connect = new ConnectionThread(macAddress, password);
+                connect = new BluetoothConnectionThread(macAddress, password);
                 connect.start();
 
             }
@@ -129,11 +129,11 @@ public class MainBluetoothActivity extends AppCompatActivity {
 
                 recyclerView = (RecyclerView) findViewById(R.id.recycler);
 
-                recyclerView.addItemDecoration(new DividerItemDecoration(MainBluetoothActivity.this));
+                recyclerView.addItemDecoration(new DividerItemDecoration(ParearBluetoothActivity.this));
 
-                recyclerView.setAdapter(new ComprasAdapter(MainBluetoothActivity.produtos, MainBluetoothActivity.this));
+                recyclerView.setAdapter(new ComprasAdapter(ParearBluetoothActivity.produtos, ParearBluetoothActivity.this));
 
-                RecyclerView.LayoutManager layout = new LinearLayoutManager(MainBluetoothActivity.this, LinearLayoutManager.VERTICAL, false);
+                RecyclerView.LayoutManager layout = new LinearLayoutManager(ParearBluetoothActivity.this, LinearLayoutManager.VERTICAL, false);
 
                 recyclerView.setLayoutManager(layout);
 
@@ -141,7 +141,7 @@ public class MainBluetoothActivity extends AppCompatActivity {
 
                 Toast.makeText(getApplicationContext(), "Carrinho Desconectado", Toast.LENGTH_SHORT).show();
 
-                Intent it = new Intent(MainBluetoothActivity.this, MainActivity.class);
+                Intent it = new Intent(ParearBluetoothActivity.this, MainActivity.class);
                 it.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 startActivity(it);
 
@@ -215,7 +215,7 @@ public class MainBluetoothActivity extends AppCompatActivity {
                 //statusMessage.setText("Bluetooth ativado :D");
 
                 //conecta no carrinho apos ativar com sucesso o BT
-                connect = new ConnectionThread(macAddress, password);
+                connect = new BluetoothConnectionThread(macAddress, password);
                 connect.start();
 
             } else {

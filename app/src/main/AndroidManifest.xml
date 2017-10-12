@@ -77,7 +77,7 @@
             android:theme="@style/Theme.Intro" />
 
         <activity
-            android:name=".view.MainBluetoothActivity"
+            android:name=".view.ParearBluetoothActivity"
             android:label="Carrinho de Compras" />
 
     </application>
