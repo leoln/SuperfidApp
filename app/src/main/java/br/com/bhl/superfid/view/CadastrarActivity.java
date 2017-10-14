@@ -27,6 +27,7 @@ import java.util.Calendar;
 import br.com.bhl.superfid.R;
 import br.com.bhl.superfid.model.Usuario;
 import br.com.bhl.superfid.util.MaskUtil;
+import br.com.bhl.superfid.util.StringUtil;
 
 public class CadastrarActivity extends ComumActivity {
 
@@ -82,7 +83,7 @@ public class CadastrarActivity extends ComumActivity {
         usuario.setSobrenome(edt_sobrenome.getText().toString());
 
         if (!TextUtils.isEmpty(edt_cpf.getText().toString())) {
-            usuario.setNumeroCPF(Long.parseLong(Usuario.tirarCaracteresEspeciais(edt_cpf.getText().toString())));
+            usuario.setNumeroCPF(Long.parseLong(StringUtil.tirarCaracteresEspeciais(edt_cpf.getText().toString())));
         } else {
             usuario.setNumeroCPF(0);
         }
@@ -112,7 +113,7 @@ public class CadastrarActivity extends ComumActivity {
             edt_dtnascimento.setText(null);
         }
 
-        usuario.setEmailFirebase(edt_email.getText().toString());
+        usuario.setEmailAutenticacao(edt_email.getText().toString());
     }
 
     /* ***************************************************************************
@@ -133,7 +134,7 @@ public class CadastrarActivity extends ComumActivity {
 
         String senha = edt_senha.getText().toString();
 
-        firebaseAuth.createUserWithEmailAndPassword(usuario.getEmailFirebase(), senha)
+        firebaseAuth.createUserWithEmailAndPassword(usuario.getEmailAutenticacao(), senha)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {

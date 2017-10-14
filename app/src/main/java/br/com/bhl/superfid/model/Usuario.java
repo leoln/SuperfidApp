@@ -6,14 +6,14 @@ import java.util.Calendar;
 public class Usuario implements Serializable{
 
     private long codigoSistema;
-    private String codigoFirebase;
+    private String codigoAutenticacao;
     private String nome;
     private String sobrenome;
     private Calendar dataNascimento;
-    private String emailFirebase;
+    private String emailAutenticacao;
     private long numeroCPF;
     private int ddd;
-    private int telefone;
+    private long telefone;
 
     public Usuario() { }
 
@@ -25,12 +25,12 @@ public class Usuario implements Serializable{
         this.codigoSistema = codigoSistema;
     }
 
-    public String getCodigoFirebase() {
-        return codigoFirebase;
+    public String getCodigoAutenticacao() {
+        return codigoAutenticacao;
     }
 
-    public void setCodigoFirebase(String codigoFirebase) {
-        this.codigoFirebase = codigoFirebase;
+    public void setCodigoAutenticacao(String codigoAutenticacao) {
+        this.codigoAutenticacao = codigoAutenticacao;
     }
 
     public String getNome() {
@@ -65,11 +65,11 @@ public class Usuario implements Serializable{
         this.ddd = ddd;
     }
 
-    public int getTelefone() {
+    public long getTelefone() {
         return telefone;
     }
 
-    public void setTelefone(int telefone) {
+    public void setTelefone(long telefone) {
         this.telefone = telefone;
     }
 
@@ -81,12 +81,12 @@ public class Usuario implements Serializable{
         this.dataNascimento = dataNascimento;
     }
 
-    public String getEmailFirebase() {
-        return emailFirebase;
+    public String getEmailAutenticacao() {
+        return emailAutenticacao;
     }
 
-    public void setEmailFirebase(String emailFirebase) {
-        this.emailFirebase = emailFirebase;
+    public void setEmailAutenticacao(String emailAutenticacao) {
+        this.emailAutenticacao = emailAutenticacao;
     }
 
     @Override
@@ -105,7 +105,7 @@ public class Usuario implements Serializable{
         if (getNumeroCPF() != usuario.getNumeroCPF()) return false;
         if (getDdd() != usuario.getDdd()) return false;
         if (getTelefone() != usuario.getTelefone()) return false;
-        if (getCodigoFirebase() != null ? !getCodigoFirebase().equals(usuario.getCodigoFirebase()) : usuario.getCodigoFirebase() != null)
+        if (getCodigoAutenticacao() != null ? !getCodigoAutenticacao().equals(usuario.getCodigoAutenticacao()) : usuario.getCodigoAutenticacao() != null)
             return false;
         if (getNome() != null ? !getNome().equals(usuario.getNome()) : usuario.getNome() != null)
             return false;
@@ -113,27 +113,24 @@ public class Usuario implements Serializable{
             return false;
         if (getDataNascimento() != null ? !getDataNascimento().equals(usuario.getDataNascimento()) : usuario.getDataNascimento() != null)
             return false;
-        return getEmailFirebase() != null ? getEmailFirebase().equals(usuario.getEmailFirebase()) : usuario.getEmailFirebase() == null;
+        return getEmailAutenticacao() != null ? getEmailAutenticacao().equals(usuario.getEmailAutenticacao()) : usuario.getEmailAutenticacao() == null;
 
     }
 
     @Override
     public int hashCode() {
         int result = (int) (getCodigoSistema() ^ (getCodigoSistema() >>> 32));
-        result = 31 * result + (getCodigoFirebase() != null ? getCodigoFirebase().hashCode() : 0);
+        result = 31 * result + (getCodigoAutenticacao() != null ? getCodigoAutenticacao().hashCode() : 0);
         result = 31 * result + (getNome() != null ? getNome().hashCode() : 0);
         result = 31 * result + (getSobrenome() != null ? getSobrenome().hashCode() : 0);
         result = 31 * result + (getDataNascimento() != null ? getDataNascimento().hashCode() : 0);
-        result = 31 * result + (getEmailFirebase() != null ? getEmailFirebase().hashCode() : 0);
+        result = 31 * result + (getEmailAutenticacao() != null ? getEmailAutenticacao().hashCode() : 0);
         result = 31 * result + (int) (getNumeroCPF() ^ (getNumeroCPF() >>> 32));
         result = 31 * result + getDdd();
-        result = 31 * result + getTelefone();
+        result = 31 * result + (int) (getTelefone() ^ (getTelefone() >>> 32));
         return result;
     }
 
-    public static String tirarCaracteresEspeciais( String texto ) {
-        texto = texto.replaceAll("[-./,;]", "");
-        return texto;
-    }
+
 
 }//fim da classe

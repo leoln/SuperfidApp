@@ -44,7 +44,7 @@ public class RecuperarActivity extends ComumActivity {
     @Override
     protected void initUser() {
         usuario = new Usuario();
-        usuario.setEmailFirebase(email.getText().toString());
+        usuario.setEmailAutenticacao(email.getText().toString());
     }
 
     @Override
@@ -58,7 +58,7 @@ public class RecuperarActivity extends ComumActivity {
     * *************************************************************************** */
     public void recuperarAcesso(View view) {
         initUser();
-        firebaseAuth.sendPasswordResetEmail( usuario.getEmailFirebase() )
+        firebaseAuth.sendPasswordResetEmail( usuario.getEmailAutenticacao() )
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {

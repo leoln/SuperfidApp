@@ -55,7 +55,7 @@ public class LoginActivity extends ComumActivity {
     @Override
     protected void initUser() {
         usuario = new Usuario();
-        usuario.setEmailFirebase(edt_email.getText().toString());
+        usuario.setEmailAutenticacao(edt_email.getText().toString());
     }
 
     /* ***************************************************************************
