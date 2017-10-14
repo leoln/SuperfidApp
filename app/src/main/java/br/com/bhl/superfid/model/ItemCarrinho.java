@@ -1,20 +1,12 @@
 package br.com.bhl.superfid.model;
 
-/**
- * Created by hericlespontes on 14/10/17.
- */
-
 public class ItemCarrinho {
 
     private Produto produto;
     private double quantidade;
 
     public ItemCarrinho() {
-    }
-
-    public ItemCarrinho(Produto produto, double quantidade) {
-        this.produto = produto;
-        this.quantidade = quantidade;
+        this.quantidade = 1;
     }
 
     public Produto getProduto() {

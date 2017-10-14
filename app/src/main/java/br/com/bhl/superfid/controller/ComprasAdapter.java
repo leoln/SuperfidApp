@@ -9,19 +9,16 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import br.com.bhl.superfid.R;
+import br.com.bhl.superfid.model.ItemCarrinho;
 import br.com.bhl.superfid.model.Produto;
-
-/**
- * Created by hericles on 28/05/17.
- */
 
 public class ComprasAdapter extends RecyclerView.Adapter {
 
-    private List<Produto> produtos;
+    private List<ItemCarrinho> itemCarrinhos;
     private Context context;
 
-    public ComprasAdapter(List<Produto> produtos, Context context) {
-        this.produtos = produtos;
+    public ComprasAdapter(List<ItemCarrinho> itemCarrinhos, Context context) {
+        this.itemCarrinhos = itemCarrinhos;
         this.context = context;
     }
 
@@ -40,16 +37,17 @@ public class ComprasAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
         ComprasViewHolder holder = (ComprasViewHolder) viewHolder;
 
-        Produto produto = produtos.get(position);
 
-        holder.descricao.setText(produto.getDescricao());
-        holder.precoUnitario.setText("" + produto.getPrecoUnitario());
-        holder.unidades.setText("" + produto.getUnidade());
-        holder.validade.setText("" + produto.getDataValidade());
+        ItemCarrinho itemCarrinho = itemCarrinhos.get(position);
+
+        holder.descricao.setText(itemCarrinho.getProduto().getDescricao());
+        holder.precoUnitario.setText("" + itemCarrinho.getProduto().getPrecoUnitario());
+        holder.unidades.setText("" + itemCarrinho.getProduto().getUnidade());
+        holder.validade.setText("" + itemCarrinho.getProduto().getDataValidade());
     }
 
     @Override
     public int getItemCount() {
-        return produtos.size();
+        return itemCarrinhos.size();
     }
 }

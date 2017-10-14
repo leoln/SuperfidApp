@@ -5,10 +5,6 @@ import android.content.ClipData;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by hericlespontes on 14/10/17.
- */
-
 public class Carrinho {
 
     private List<ItemCarrinho> listaCarrinho;
@@ -19,9 +15,24 @@ public class Carrinho {
         subTotal = 0.0;
     }
 
-    public void setListaCarrinho(ItemCarrinho itemCarrinho){
-
+    public List<ItemCarrinho> getListaCarrinho() {
+        return listaCarrinho;
     }
 
+    public void setListaCarrinho(ItemCarrinho itemCarrinho){
+        for (ItemCarrinho item:
+             this.listaCarrinho) {
+            if ( itemCarrinho.getProduto().equals( item.getProduto() )) {
+                item.setQuantidade(item.getQuantidade() + 1);
+            } else {
+                listaCarrinho.add(itemCarrinho);
+            }
+        }
+        somaSubTotal( itemCarrinho );
+    }
+
+    public void somaSubTotal( ItemCarrinho itemCarrinho ) {
+        subTotal += ( itemCarrinho.getProduto().getPrecoUnitario() * itemCarrinho.getProduto().getUnidade() ) * itemCarrinho.getQuantidade();
+    }
 
 }

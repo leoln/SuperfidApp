@@ -1,8 +1,5 @@
 package br.com.bhl.superfid.controller;
 
-/**
- * Created by hericlespontes on 15/07/17.
- */
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothServerSocket;

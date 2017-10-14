@@ -5,11 +5,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import br.com.bhl.superfid.R;
-
-/**
- * Created by hericles on 28/05/17.
- */
-
 public class ComprasViewHolder extends RecyclerView.ViewHolder {
     final TextView descricao;
     final TextView precoUnitario;

@@ -9,10 +9,6 @@ import android.view.View;
 
 import br.com.bhl.superfid.R;
 
-/**
- * Created by hericles on 29/05/17.
- */
-
 public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
     private Drawable mDivider;

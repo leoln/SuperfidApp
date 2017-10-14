@@ -10,10 +10,6 @@ import android.widget.Toast;
 import br.com.bhl.superfid.R;
 import br.com.bhl.superfid.service.BluetoothDataService;
 
-/**
- * Created by hericlespontes on 16/07/17.
- */
-
 public class MainBluetoothActivity extends Activity {
 
     public static final int ENABLE_BLUETOOTH = 1;

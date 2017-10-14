@@ -18,13 +18,16 @@ import java.util.List;
 import br.com.bhl.superfid.R;
 import br.com.bhl.superfid.controller.ComprasAdapter;
 import br.com.bhl.superfid.controller.DividerItemDecoration;
+import br.com.bhl.superfid.model.Carrinho;
+import br.com.bhl.superfid.model.ItemCarrinho;
 import br.com.bhl.superfid.model.Produto;
 import br.com.bhl.superfid.util.WebClient;
 
-public class ComprasActivity extends AppCompatActivity{
+public class ComprasActivity extends AppCompatActivity {
 
     public static RecyclerView recyclerView;
-    public static List<Produto> produtos = new ArrayList<>();
+
+    private static Carrinho carrinho;
 
     private static TextView subTotal;
     private static double subTotalDouble;
@@ -36,21 +39,20 @@ public class ComprasActivity extends AppCompatActivity{
 
         subTotal = (TextView) findViewById(R.id.subTotal);
 
+        carrinho = new Carrinho();
+
         //inicializando a list view de produtos
         recyclerView = (RecyclerView) findViewById(R.id.recycler);
         recyclerView.addItemDecoration(new DividerItemDecoration(this));
-        recyclerView.setAdapter(new ComprasAdapter(this.produtos, this));
+        recyclerView.setAdapter(new ComprasAdapter(this.carrinho.getListaCarrinho(), this));
         RecyclerView.LayoutManager layout = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layout);
 
     }
 
-    public static void addProduto(String codigoRecebido){
-
+    public static void addProduto(String codigoRecebido) {
         GetJson getJson = new GetJson();
         getJson.execute(codigoRecebido);
-
-
     }
 
     private static class GetJson extends AsyncTask<String, Void, Produto> {
@@ -83,19 +85,15 @@ public class ComprasActivity extends AppCompatActivity{
         protected void onPostExecute(Produto produto) {
             super.onPostExecute(produto);
 
-            produtos.add(produto);
+            ItemCarrinho itemCarrinho = new ItemCarrinho();
+            itemCarrinho.setProduto(produto);
+
+            carrinho.setListaCarrinho( itemCarrinho );
 
             recyclerView.getAdapter().notifyDataSetChanged();
             recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount());
 
-            //calcula o subtotal varrendo o list de produto e multiplicando
-            if( !produtos.isEmpty() ) {
-                for (Produto produtoEach : produtos) {
-                    subTotalDouble = (produtoEach.getPrecoUnitario() * produto.getUnidade());
-                }
-            }
-
-            subTotal.setText("R$"+subTotalDouble);
+            subTotal.setText("R$" + subTotalDouble);
         }
     }
 }
