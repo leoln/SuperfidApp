@@ -79,6 +79,7 @@ public class MainBluetoothActivity extends Activity {
 
             } else {
                 //statusMessage.setText("Bluetooth não ativado :(");
+                status.setText("Erro ao conectar");
                 Toast.makeText(getApplicationContext(), "Não foi possível ativar o BT", Toast.LENGTH_SHORT).show();
                 cancel();
             }
