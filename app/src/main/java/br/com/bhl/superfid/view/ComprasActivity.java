@@ -88,13 +88,14 @@ public class ComprasActivity extends AppCompatActivity{
             recyclerView.getAdapter().notifyDataSetChanged();
             recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount());
 
+            //calcula o subtotal varrendo o list de produto e multiplicando
             if( !produtos.isEmpty() ) {
                 for (Produto produtoEach : produtos) {
-                    subTotalDouble = ( produtoEach.getPrecoUnitario() * produto.getUnidade() ) + Double.parseDouble(subTotal.getText().toString());
+                    subTotalDouble = (produtoEach.getPrecoUnitario() * produto.getUnidade());
                 }
             }
 
-            subTotal.setText(subTotalDouble + "");
+            subTotal.setText("R$"+subTotalDouble);
         }
     }
 }
