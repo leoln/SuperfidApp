@@ -20,12 +20,18 @@ public class Carrinho {
     }
 
     public void setListaCarrinho(ItemCarrinho itemCarrinho){
-        for (ItemCarrinho item:
-             this.listaCarrinho) {
-            if ( itemCarrinho.getProduto().equals( item.getProduto() )) {
-                item.setQuantidade(item.getQuantidade() + 1);
-            } else {
-                listaCarrinho.add(itemCarrinho);
+        if(listaCarrinho.isEmpty()){
+            //se nao houver produtos
+            listaCarrinho.add(itemCarrinho);
+        }else {
+            //se houver produtos, verificar duplicatas
+            for (ItemCarrinho item :
+                    this.listaCarrinho) {
+                if (itemCarrinho.getProduto().equals(item.getProduto())) {
+                    item.setQuantidade(item.getQuantidade() + 1);
+                } else {
+                    listaCarrinho.add(itemCarrinho);
+                }
             }
         }
         somaSubTotal( itemCarrinho );
@@ -35,4 +41,7 @@ public class Carrinho {
         subTotal += ( itemCarrinho.getProduto().getPrecoUnitario() * itemCarrinho.getProduto().getUnidade() ) * itemCarrinho.getQuantidade();
     }
 
+    public double getSubTotal() {
+        return subTotal;
+    }
 }

@@ -30,7 +30,6 @@ public class ComprasActivity extends AppCompatActivity {
     private static Carrinho carrinho;
 
     private static TextView subTotal;
-    private static double subTotalDouble;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -93,7 +92,7 @@ public class ComprasActivity extends AppCompatActivity {
             recyclerView.getAdapter().notifyDataSetChanged();
             recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount());
 
-            subTotal.setText("R$" + subTotalDouble);
+            subTotal.setText("R$" + carrinho.getSubTotal());
         }
     }
 }
