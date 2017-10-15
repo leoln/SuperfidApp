@@ -13,8 +13,6 @@ import br.com.bhl.superfid.service.BluetoothDataService;
 public class MainBluetoothActivity extends Activity {
 
     public static final int ENABLE_BLUETOOTH = 1;
-    private static BluetoothDataService connect;
-    private String macAddress, ssId, password;
     private String qrResult;
 
     public TextView status;
@@ -33,15 +31,10 @@ public class MainBluetoothActivity extends Activity {
 
         qrResult = intent.getStringExtra("qrResult");
 
-        String[] textoSeparado = qrResult.split(";");
-
-        macAddress = textoSeparado[0];
-        ssId = textoSeparado[1];
-        password = textoSeparado[2];
-
         BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
         if (btAdapter == null) {
             //statusMessage.setText("Que pena! Hardware Bluetooth não está funcionando :(");
+            status.setText("Bluetooth não está funcionando.");
             finish();
             onDestroy();
         } else {
@@ -51,7 +44,7 @@ public class MainBluetoothActivity extends Activity {
                 Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                 startActivityForResult(enableBtIntent, ENABLE_BLUETOOTH);
 
-                status.setText("Ativando Bluetooth");
+                status.setText("Ativando Bluetooth...");
                 //statusMessage.setText("Solicitando ativação do Bluetooth...");
             } else {
                 //statusMessage.setText("Bluetooth já ativado :)");
@@ -77,19 +70,13 @@ public class MainBluetoothActivity extends Activity {
                 //statusMessage.setText("Bluetooth não ativado :(");
                 status.setText("Erro ao conectar");
                 Toast.makeText(getApplicationContext(), "Não foi possível ativar o BT", Toast.LENGTH_SHORT).show();
-                cancel();
             }
         }
     }
 
-    public void cancel(){
-        connect.onDestroy();
-        finish();
-
-    }
     @Override
     protected void onDestroy() {
-        this.cancel();
+        stopService(new Intent(this, BluetoothDataService.class));
         super.onDestroy();
     }
 }

@@ -59,26 +59,27 @@ public class BluetoothDataService extends Service {
         stopThread = false;
 
         //define os filtros para o broadcast do BT
-        IntentFilter filter1 = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
-        registerReceiver(mBroadcastReceiver1, filter1);
 
         IntentFilter filter2 = new IntentFilter("android.bluetooth.device.action.PAIRING_REQUEST");
         registerReceiver(mBroadcastReceiver1, filter2);
 
         IntentFilter filter3 = new IntentFilter(BluetoothDevice.ACTION_ACL_CONNECTED);
         registerReceiver(mBroadcastReceiver1, filter3);
-
-        IntentFilter filter4 = new IntentFilter(BluetoothDevice.ACTION_ACL_DISCONNECTED);
-        registerReceiver(mBroadcastReceiver1, filter4);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         //pega dados de conexao
         String qrResult = intent.getStringExtra("qrResult");
-        String[] textoSeparado = qrResult.split(";");
-        MAC_ADDRESS = textoSeparado[0];
-        PWD = textoSeparado[2];
+
+        if(!qrResult.isEmpty()){
+            String[] textoSeparado = qrResult.split(";");
+            MAC_ADDRESS = textoSeparado[0];
+            PWD = textoSeparado[2];
+        }else{
+            onDestroy();
+        }
+
 
         Log.d("BT SERVICE", "SERVICE STARTED");
 
@@ -323,42 +324,12 @@ public class BluetoothDataService extends Service {
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
 
-            if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
-                final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
-                switch (state) {
-                    case BluetoothAdapter.STATE_OFF:
-
-                        break;
-                    case BluetoothAdapter.STATE_TURNING_OFF:
-
-                        break;
-                    case BluetoothAdapter.STATE_ON:
-                        //Toast.makeText(getApplicationContext(), "BT on", Toast.LENGTH_SHORT).show();
-
-                        break;
-                    case BluetoothAdapter.STATE_TURNING_ON:
-
-                        break;
-
-                }
-
-            } else if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
-
-                //Do something if connected
-                //Toast.makeText(getApplicationContext(), "BT Connected", Toast.LENGTH_SHORT).show();
+            if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
 
                 //Ativa activity compras
 
                 //MainBluetoothActivity.status.setText("Pronto!");
                 startCompras();
-
-            } else if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
-
-                Toast.makeText(getApplicationContext(), "Carrinho Desconectado", Toast.LENGTH_SHORT).show();
-
-                Intent it = new Intent(BluetoothDataService.this, MainActivity.class);
-                it.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                startActivity(it);
 
             } else if (intent.getAction().equals("android.bluetooth.device.action.PAIRING_REQUEST")) {
                 try {
