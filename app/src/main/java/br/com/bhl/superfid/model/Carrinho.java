@@ -6,11 +6,11 @@ import java.util.List;
 public class Carrinho {
 
     private List<ItemCarrinho> listaCarrinho;
-    private double subTotal;
+    private double subtotal;
 
     public Carrinho() {
         listaCarrinho = new ArrayList<>();
-        subTotal = 0.0;
+        subtotal = 0.0;
     }
 
     public List<ItemCarrinho> getListaCarrinho() {
@@ -39,14 +39,14 @@ public class Carrinho {
                 listaCarrinho.add(itemCarrinho);
             }//se count for 1 significa que atualizou quantidade e nao precisa fazer mais nada
         }
-        somaSubTotal( itemCarrinho ); //a cada atualizacao, atualiza o subtotal
+        somaSubtotal( itemCarrinho ); //a cada atualizacao, atualiza o subtotal
     }
 
-    public void somaSubTotal( ItemCarrinho itemCarrinho ) {
-        subTotal += ( itemCarrinho.getProduto().getPrecoUnitario() * itemCarrinho.getProduto().getUnidade() ) * itemCarrinho.getQuantidade();
+    public void somaSubtotal( ItemCarrinho itemCarrinho ) {
+        subtotal += ( itemCarrinho.getProduto().getPrecoUnitario() * itemCarrinho.getProduto().getUnidade() ) * itemCarrinho.getQuantidade();
     }
 
-    public double getSubTotal() {
-        return subTotal;
+    public double getSubtotal() {
+        return subtotal;
     }
 }

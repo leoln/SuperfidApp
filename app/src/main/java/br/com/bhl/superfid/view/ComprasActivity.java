@@ -12,16 +12,14 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 
 import java.io.IOException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 import br.com.bhl.superfid.R;
 import br.com.bhl.superfid.controller.ComprasAdapter;
@@ -130,7 +128,7 @@ public class ComprasActivity extends AppCompatActivity {
             WebClient webClient = new WebClient();
 
             try {
-                json = webClient.get(strings[0]);
+                json = webClient.get("/produto/parseJson?rfid=", strings[0]);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -145,6 +143,7 @@ public class ComprasActivity extends AppCompatActivity {
             super.onPostExecute(produto);
 
             ItemCarrinho itemCarrinho = new ItemCarrinho();
+            itemCarrinho.setCarrinho(carrinho);
             itemCarrinho.setProduto(produto);
 
             carrinho.setListaCarrinho( itemCarrinho );
@@ -152,8 +151,10 @@ public class ComprasActivity extends AppCompatActivity {
             recyclerView.getAdapter().notifyDataSetChanged();
             recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount());
 
-            String subTotalFormated = String.format("%.2f", carrinho.getSubTotal());
-            subTotal.setText("R$" + subTotalFormated);
+            //String subTotalFormated = String.format("%.2f", carrinho.getSubtotal());
+
+            NumberFormat formatarSubtotal = NumberFormat.getCurrencyInstance(new Locale("pt" ,"BR"));
+            subTotal.setText("R$" + formatarSubtotal.format(carrinho.getSubtotal()));
         }
     }
 }

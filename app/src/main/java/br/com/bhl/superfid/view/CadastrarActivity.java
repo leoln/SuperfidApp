@@ -2,11 +2,13 @@ package br.com.bhl.superfid.view;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
@@ -19,7 +21,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.crash.FirebaseCrash;
+import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -28,6 +32,7 @@ import br.com.bhl.superfid.R;
 import br.com.bhl.superfid.model.Usuario;
 import br.com.bhl.superfid.util.MaskUtil;
 import br.com.bhl.superfid.util.StringUtil;
+import br.com.bhl.superfid.util.WebClient;
 
 public class CadastrarActivity extends ComumActivity {
 
@@ -82,36 +87,28 @@ public class CadastrarActivity extends ComumActivity {
         usuario.setNome(edt_nome.getText().toString());
         usuario.setSobrenome(edt_sobrenome.getText().toString());
 
-        if (!TextUtils.isEmpty(edt_cpf.getText().toString())) {
+        if (!TextUtils.isEmpty(edt_cpf.getText().toString()))
             usuario.setNumeroCPF(Long.parseLong(StringUtil.tirarCaracteresEspeciais(edt_cpf.getText().toString())));
-        } else {
+        else
             usuario.setNumeroCPF(0);
-        }
 
-        if (!TextUtils.isEmpty(edt_ddd.getText().toString())) {
-            usuario.setDdd(Integer.parseInt(edt_ddd.getText().toString()));
-        } else {
-            usuario.setDdd(0);
-        }
 
-        if (!TextUtils.isEmpty(edt_telefone.getText().toString())) {
-            usuario.setTelefone(Integer.parseInt(edt_telefone.getText().toString()));
-        } else {
-            usuario.setTelefone(0);
-        }
+        if (!TextUtils.isEmpty(edt_ddd.getText().toString()))
+            usuario.setNumeroDDD(Integer.parseInt(edt_ddd.getText().toString()));
+        else
+            usuario.setNumeroDDD(0);
 
-        if (!TextUtils.isEmpty(edt_dtnascimento.getText().toString())) {
-            SimpleDateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy");
-            try {
-                Calendar data = Calendar.getInstance();
-                data.setTime(formatoData.parse(edt_dtnascimento.getText().toString()));
-                usuario.setDataNascimento(data);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        } else {
+
+        if (!TextUtils.isEmpty(edt_telefone.getText().toString()))
+            usuario.setNumeroTelefone(Long.parseLong(edt_telefone.getText().toString()));
+        else
+            usuario.setNumeroTelefone(0);
+
+
+        if (!TextUtils.isEmpty(edt_dtnascimento.getText().toString()))
+            usuario.setDataNascimento(edt_dtnascimento.getText().toString());
+        else
             edt_dtnascimento.setText(null);
-        }
 
         usuario.setEmailAutenticacao(edt_email.getText().toString());
     }
@@ -120,7 +117,6 @@ public class CadastrarActivity extends ComumActivity {
     *                      METODOS DE
     * *************************************************************************** */
     public void enviarDadosCadastro(View view) {
-        initUser();
         criarUsuario();
     }
 
@@ -129,6 +125,8 @@ public class CadastrarActivity extends ComumActivity {
         if (!validarFormulario()) {
             return;
         }
+
+        initUser();
 
         openProgressBar();
 
@@ -139,6 +137,11 @@ public class CadastrarActivity extends ComumActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            usuario.setCodigoAutenticacao(firebaseAuth.getCurrentUser().getUid());
+
+                            JsonUsuario jsonUsuario = new JsonUsuario();
+                            jsonUsuario.execute(usuario);
+
                             closeProgressBar();
                             showToast("Conta criada com sucesso!");
                             firebaseAuth.signOut();
@@ -224,6 +227,44 @@ public class CadastrarActivity extends ComumActivity {
 
             edt_dtnascimento.setText(formatoData.format(data.getTime()));
         }
+    }
+
+    private class JsonUsuario extends AsyncTask<Usuario, Void, String> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            openProgressBar();
+        }
+
+        @Override
+        protected String doInBackground(Usuario... usuarios) {
+            Usuario usuario = usuarios[0];
+            Gson gson = new Gson();
+
+            Log.v("USUARIO", usuario.toString());
+            Log.v("JSON", gson.toJson(usuario));
+
+            WebClient webClient = new WebClient();
+
+            try {
+                webClient.post("/usuario/cadastrar", gson.toJson(usuario));
+            } catch (IOException e) {
+                String s = e.getMessage();
+                Log.v("ERRO POST", s);
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String string) {
+            super.onPostExecute(string);
+
+            closeProgressBar();
+
+        }
+
     }
 
 }

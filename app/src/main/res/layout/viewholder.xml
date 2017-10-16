@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dip"
-            android:text="Bolacha Recheada Bono"
+            android:text="Bolacha de Chocolate Bono"
             android:textColor="#000"
             android:textSize="20sp" />
 

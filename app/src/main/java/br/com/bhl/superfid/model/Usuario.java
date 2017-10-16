@@ -5,23 +5,23 @@ import java.util.Calendar;
 
 public class Usuario implements Serializable{
 
-    private long codigoSistema;
+    private Long codigoSistema;
     private String codigoAutenticacao;
     private String nome;
     private String sobrenome;
-    private Calendar dataNascimento;
+    private String dataNascimento;
     private String emailAutenticacao;
     private long numeroCPF;
-    private int ddd;
-    private long telefone;
+    private int numeroDDD;
+    private long numeroTelefone;
 
     public Usuario() { }
 
-    public long getCodigoSistema() {
+    public Long getCodigoSistema() {
         return codigoSistema;
     }
 
-    public void setCodigoSistema(long codigoSistema) {
+    public void setCodigoSistema(Long codigoSistema) {
         this.codigoSistema = codigoSistema;
     }
 
@@ -57,27 +57,27 @@ public class Usuario implements Serializable{
         this.numeroCPF = numeroCPF;
     }
 
-    public int getDdd() {
-        return ddd;
+    public int getNumeroDDD() {
+        return numeroDDD;
     }
 
-    public void setDdd(int ddd) {
-        this.ddd = ddd;
+    public void setNumeroDDD(int numeroDDD) {
+        this.numeroDDD = numeroDDD;
     }
 
-    public long getTelefone() {
-        return telefone;
+    public long getNumeroTelefone() {
+        return numeroTelefone;
     }
 
-    public void setTelefone(long telefone) {
-        this.telefone = telefone;
+    public void setNumeroTelefone(long numeroTelefone) {
+        this.numeroTelefone = numeroTelefone;
     }
 
-    public Calendar getDataNascimento() {
+    public String getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(Calendar dataNascimento) {
+    public void setDataNascimento(String dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 
@@ -91,7 +91,9 @@ public class Usuario implements Serializable{
 
     @Override
     public String toString() {
-        return super.toString();
+        return "Usuario [codigoSistema=" + codigoSistema + ", codigoAutenticacao=" + codigoAutenticacao + ", nome="
+                + nome + ", sobrenome=" + sobrenome + ", dataNascimento=" + dataNascimento + ", emailAutenticacao="
+                + emailAutenticacao + ", numeroCPF=" + numeroCPF + ", numeroDDD=" + numeroDDD + ", numeroTelefone=" + numeroTelefone + "]";
     }
 
     @Override
@@ -103,8 +105,8 @@ public class Usuario implements Serializable{
 
         if (getCodigoSistema() != usuario.getCodigoSistema()) return false;
         if (getNumeroCPF() != usuario.getNumeroCPF()) return false;
-        if (getDdd() != usuario.getDdd()) return false;
-        if (getTelefone() != usuario.getTelefone()) return false;
+        if (getNumeroDDD() != usuario.getNumeroDDD()) return false;
+        if (getNumeroTelefone() != usuario.getNumeroTelefone()) return false;
         if (getCodigoAutenticacao() != null ? !getCodigoAutenticacao().equals(usuario.getCodigoAutenticacao()) : usuario.getCodigoAutenticacao() != null)
             return false;
         if (getNome() != null ? !getNome().equals(usuario.getNome()) : usuario.getNome() != null)
@@ -126,11 +128,9 @@ public class Usuario implements Serializable{
         result = 31 * result + (getDataNascimento() != null ? getDataNascimento().hashCode() : 0);
         result = 31 * result + (getEmailAutenticacao() != null ? getEmailAutenticacao().hashCode() : 0);
         result = 31 * result + (int) (getNumeroCPF() ^ (getNumeroCPF() >>> 32));
-        result = 31 * result + getDdd();
-        result = 31 * result + (int) (getTelefone() ^ (getTelefone() >>> 32));
+        result = 31 * result + getNumeroDDD();
+        result = 31 * result + (int) (getNumeroTelefone() ^ (getNumeroTelefone() >>> 32));
         return result;
     }
-
-
 
 }//fim da classe
