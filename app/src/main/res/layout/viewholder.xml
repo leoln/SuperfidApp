@@ -8,7 +8,7 @@
         android:id="@+id/item_produto_imagem"
         android:layout_width="110dip"
         android:layout_height="match_parent"
-        android:src="@drawable/bolacha_bono" />
+        android:src="@drawable/sem_imagem" />
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -1,23 +1,29 @@
 package br.com.bhl.superfid.controller;
 
+
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import java.io.ByteArrayInputStream;
+import java.net.URL;
 import java.util.List;
+import java.util.concurrent.ThreadFactory;
 
 import br.com.bhl.superfid.R;
 import br.com.bhl.superfid.model.ItemCarrinho;
-import br.com.bhl.superfid.model.Produto;
 
 public class ComprasAdapter extends RecyclerView.Adapter {
 
     private List<ItemCarrinho> itemCarrinhos;
     private Context context;
+
+    ComprasViewHolder holder;
+    ItemCarrinho itemCarrinho;
+    Bitmap imagem;
 
     public ComprasAdapter(List<ItemCarrinho> itemCarrinhos, Context context) {
         this.itemCarrinhos = itemCarrinhos;
@@ -37,15 +43,32 @@ public class ComprasAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
-        ComprasViewHolder holder = (ComprasViewHolder) viewHolder;
+        holder = (ComprasViewHolder) viewHolder;
 
 
-        ItemCarrinho itemCarrinho = itemCarrinhos.get(position);
+        itemCarrinho = itemCarrinhos.get(position);
 
         holder.descricao.setText(itemCarrinho.getProduto().getDescricao());
         holder.precoUnitario.setText("" + itemCarrinho.getProduto().getPrecoUnitario());
         holder.validade.setText("" + itemCarrinho.getProduto().getDataValidade());
-        holder.quantidade.setText(""+ itemCarrinho.getQuantidade());
+        holder.quantidade.setText("" + itemCarrinho.getQuantidade());
+
+        new Thread(new Runnable()
+
+        {
+            public void run() {
+
+                try {
+                    URL url;
+                    url = new URL(itemCarrinho.getProduto().getUrlImagem());
+                    imagem = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                    holder.imagem.setImageBitmap(imagem);
+                } catch (Exception e) {
+                    Log.d("COMPRAS_IMAGEM", e.toString());
+                }
+
+            }
+        }).start();
 
     }
 

@@ -70,15 +70,17 @@ public class BluetoothDataService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         //pega dados de conexao
-        String qrResult = intent.getStringExtra("qrResult");
+        if (intent != null) {
+            String qrResult = intent.getStringExtra("qrResult");
 
-        if(!qrResult.isEmpty()){
             String[] textoSeparado = qrResult.split(";");
             MAC_ADDRESS = textoSeparado[0];
             PWD = textoSeparado[2];
         }else{
             onDestroy();
         }
+
+
 
 
         Log.d("BT SERVICE", "SERVICE STARTED");
