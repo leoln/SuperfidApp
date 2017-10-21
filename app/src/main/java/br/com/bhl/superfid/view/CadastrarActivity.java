@@ -245,10 +245,8 @@ public class CadastrarActivity extends ComumActivity {
             Log.v("USUARIO", usuario.toString());
             Log.v("JSON", gson.toJson(usuario));
 
-            WebClient webClient = new WebClient();
-
             try {
-                webClient.post("/usuario/cadastrar", gson.toJson(usuario));
+                WebClient.post("/usuario/cadastrar", gson.toJson(usuario));
             } catch (IOException e) {
                 String s = e.getMessage();
                 Log.v("ERRO POST", s);

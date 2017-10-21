@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +20,9 @@ import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import br.com.bhl.superfid.R;
@@ -47,6 +51,15 @@ public class ComprasActivity extends AppCompatActivity {
 
         carrinho = new Carrinho();
 
+        Calendar calendar = GregorianCalendar.getInstance();
+        SimpleDateFormat data = new SimpleDateFormat("dd/MM/yyyy");
+        carrinho.setDataCriacao(data.format(calendar.getTime()));
+
+        Log.v("CARRINHO", carrinho.toString());
+
+        CarrinhoWebService carrinhoWebService = new CarrinhoWebService();
+        carrinhoWebService.execute(carrinho);
+
         //inicializando a list view de produtos
         recyclerView = (RecyclerView) findViewById(R.id.recycler);
         recyclerView.addItemDecoration(new DividerItemDecoration(this));
@@ -63,8 +76,8 @@ public class ComprasActivity extends AppCompatActivity {
     }
 
     public static void addProduto(String codigoRecebido) {
-        GetJson getJson = new GetJson();
-        getJson.execute(codigoRecebido);
+        ProdutoWebService produtoWebService = new ProdutoWebService();
+        produtoWebService.execute(codigoRecebido);
     }
 
     @Override
@@ -112,7 +125,7 @@ public class ComprasActivity extends AppCompatActivity {
         }
     };
 
-    private static class GetJson extends AsyncTask<String, Void, Produto> {
+    private static class ProdutoWebService extends AsyncTask<String, Void, Produto> {
 
         @Override
         protected void onPreExecute() {
@@ -125,10 +138,9 @@ public class ComprasActivity extends AppCompatActivity {
             Produto produto = null;
             Gson gson = new Gson();
             String json = "";
-            WebClient webClient = new WebClient();
 
             try {
-                json = webClient.get("/produto/parseJson?rfid=", strings[0]);
+                json = WebClient.get("/produto/parseJson?rfid=", strings[0]);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -148,13 +160,50 @@ public class ComprasActivity extends AppCompatActivity {
 
             carrinho.setListaCarrinho( itemCarrinho );
 
+            ItemCarrinhoWebService itemCarrinhoWebService = new ItemCarrinhoWebService();
+            itemCarrinhoWebService.execute(itemCarrinho);
+
             recyclerView.getAdapter().notifyDataSetChanged();
             recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount());
 
-            //String subTotalFormated = String.format("%.2f", carrinho.getSubtotal());
-
             NumberFormat formatarSubtotal = NumberFormat.getCurrencyInstance(new Locale("pt" ,"BR"));
-            subTotal.setText("R$" + formatarSubtotal.format(carrinho.getSubtotal()));
+            subTotal.setText(formatarSubtotal.format(carrinho.getSubtotal()));
+        }
+    }
+
+    private static class ItemCarrinhoWebService extends AsyncTask<ItemCarrinho, Void, String> {
+
+        @Override
+        protected String doInBackground(ItemCarrinho... itemCarrinhos) {
+
+            Gson gson = new Gson();
+
+            try {
+                Log.v("ITEM", gson.toJson(itemCarrinhos[0]));
+                WebClient.post("/itemCarrinho/cadastrar", gson.toJson(itemCarrinhos[0]));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+    }
+
+    private static class CarrinhoWebService extends AsyncTask<Carrinho, Void, String> {
+
+        @Override
+        protected String doInBackground(Carrinho... carrinhos) {
+
+            Gson gson = new Gson();
+
+            try {
+                Log.v("CARRINHO", gson.toJson(carrinhos[0]));
+                WebClient.post("/carrinho/cadastrar", gson.toJson(carrinhos[0]));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
         }
     }
 }

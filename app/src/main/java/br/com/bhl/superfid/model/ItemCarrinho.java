@@ -1,9 +1,15 @@
 package br.com.bhl.superfid.model;
 
-public class ItemCarrinho {
+import java.io.Serializable;
 
-    private Carrinho carrinho;
+public class ItemCarrinho implements Serializable{
+
+    private Long codigoItem;
+
+    private transient Carrinho carrinho;
+
     private Produto produto;
+
     private double quantidade;
 
     public ItemCarrinho() {
@@ -33,4 +39,5 @@ public class ItemCarrinho {
     public void setQuantidade(double quantidade) {
         this.quantidade = quantidade;
     }
+
 }

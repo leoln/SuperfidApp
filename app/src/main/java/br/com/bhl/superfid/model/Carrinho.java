@@ -1,11 +1,14 @@
 package br.com.bhl.superfid.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Carrinho {
+public class Carrinho implements Serializable{
 
+    private Long codigo;
     private List<ItemCarrinho> listaCarrinho;
+    private String dataCriacao;
     private double subtotal;
 
     public Carrinho() {
@@ -49,4 +52,18 @@ public class Carrinho {
     public double getSubtotal() {
         return subtotal;
     }
+
+    public String getDataCriacao() {
+        return dataCriacao;
+    }
+
+    public void setDataCriacao(String dataCriacao) {
+        this.dataCriacao = dataCriacao;
+    }
+
+    @Override
+    public String toString() {
+        return "Carrinho [codigo=" + codigo + ", dataCriacao=" + dataCriacao + ", listaCarrinho=" + listaCarrinho + ", subtotal=" + subtotal + "]";
+    }
+
 }

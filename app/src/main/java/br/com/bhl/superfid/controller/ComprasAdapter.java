@@ -10,7 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import java.net.URL;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ThreadFactory;
 
 import br.com.bhl.superfid.R;
@@ -44,14 +46,14 @@ public class ComprasAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
         holder = (ComprasViewHolder) viewHolder;
-
+        NumberFormat formatarSubtotal = NumberFormat.getCurrencyInstance(new Locale("pt" ,"BR"));
 
         itemCarrinho = itemCarrinhos.get(position);
 
         holder.descricao.setText(itemCarrinho.getProduto().getDescricao());
-        holder.precoUnitario.setText("" + itemCarrinho.getProduto().getPrecoUnitario());
-        holder.validade.setText("" + itemCarrinho.getProduto().getDataValidade());
-        holder.quantidade.setText("" + itemCarrinho.getQuantidade());
+        holder.precoUnitario.setText("" + formatarSubtotal.format( itemCarrinho.getProduto().getPrecoUnitario() ));
+        holder.validade.setText("Dt.Validade: " + itemCarrinho.getProduto().getDataValidade());
+        holder.quantidade.setText("Quantidade: " + itemCarrinho.getQuantidade());
 
         new Thread(new Runnable()
 

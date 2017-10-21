@@ -11,11 +11,11 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class WebClient {
+public abstract class WebClient {
 
     private static final String BASE_URL = "https://superfidweb.herokuapp.com";
 
-    public String post(String caminho, String json) throws IOException {
+    public static String post(String caminho, String json) throws IOException {
 
         OkHttpClient client = new OkHttpClient();
 
@@ -43,7 +43,7 @@ public class WebClient {
 
     }
 
-    public String get(String caminho, String valor) throws IOException {
+    public static String get(String caminho, String valor) throws IOException {
 
         URL url = new URL(BASE_URL + caminho + valor);
 
