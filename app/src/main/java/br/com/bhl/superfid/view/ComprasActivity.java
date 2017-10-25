@@ -155,7 +155,9 @@ public class ComprasActivity extends AppCompatActivity {
             super.onPostExecute(produto);
 
             ItemCarrinho itemCarrinho = new ItemCarrinho();
+            itemCarrinho.setCodigoCarrinho(carrinho.getCodigo());
             itemCarrinho.setCarrinho(carrinho);
+            itemCarrinho.setCodigoProduto(produto.getCodigo());
             itemCarrinho.setProduto(produto);
 
             carrinho.setListaCarrinho( itemCarrinho );

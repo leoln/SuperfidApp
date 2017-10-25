@@ -1,20 +1,27 @@
 package br.com.bhl.superfid.view;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.gson.Gson;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.journeyapps.barcodescanner.CaptureActivity;
 
+import java.io.IOException;
+
 import br.com.bhl.superfid.R;
+import br.com.bhl.superfid.model.Usuario;
+import br.com.bhl.superfid.util.WebClient;
 
 public class MainActivity extends ComumActivity {
 
@@ -23,6 +30,8 @@ public class MainActivity extends ComumActivity {
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
 
+    private Usuario usuario;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,10 +39,10 @@ public class MainActivity extends ComumActivity {
 
         initViews();
 
-        toolbar.setTitle("Seja bem-vindo " /*+ firebaseUser.getDisplayName() + "!"*/);
-        setSupportActionBar(toolbar);
-
         firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
+
+        initUser();
 
     }
 
@@ -42,17 +51,26 @@ public class MainActivity extends ComumActivity {
     * *************************************************************************** */
     @Override
     protected void initViews() {
+        progressBar = (ProgressBar) findViewById(R.id.main_progressbar);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
     }
 
     @Override
     protected void initUser() {
-
+        GetUsuarioService getUsuarioService = new GetUsuarioService();
+        getUsuarioService.execute(firebaseUser.getUid());
     }
 
     /* ***************************************************************************
     *                      METODOS DE CICLO DE VIDA DO ANDROID
     * *************************************************************************** */
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        initUser();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -107,6 +125,40 @@ public class MainActivity extends ComumActivity {
         integrator.setBeepEnabled(true);
         integrator.setCaptureActivity(CaptureActivity.class);
         integrator.initiateScan();
+    }
+
+    private class GetUsuarioService extends AsyncTask<String, Void, Usuario> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            openProgressBar();
+        }
+
+        @Override
+        protected Usuario doInBackground(String... strings) {
+            Gson gson = new Gson();
+            String json = "";
+
+            try {
+                json = WebClient.get("/usuario/parseJson?codigoAutenticacao=", strings[0]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            usuario = gson.fromJson(json, Usuario.class);
+
+            return usuario;
+        }
+
+        @Override
+        protected void onPostExecute(Usuario usuario) {
+            super.onPostExecute(usuario);
+            closeProgressBar();
+
+            toolbar.setTitle("Seja bem-vindo " + usuario.getNome());
+            setSupportActionBar(toolbar);
+        }
     }
 
 }
