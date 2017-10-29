@@ -39,11 +39,33 @@
                 android:textSize="25dp"
                 android:typeface="sans" />
 
-            <Button
-                android:id="@+id/button2"
-                android:layout_width="fill_parent"
-                android:layout_height="55dp"
-                android:text="Finalizar compra" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/BtnCancelarCompra"
+                    android:layout_width="fill_parent"
+                    android:layout_height="55dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_gravity="left"
+                    android:layout_toEndOf="@+id/BtnFinalizarCompra"
+                    android:layout_toRightOf="@+id/BtnFinalizarCompra"
+                    android:layout_weight="1"
+                    android:text="Cancelar"
+                    android:onClick="cancelarCompra"/>
+
+                <Button
+                    android:id="@+id/BtnFinalizarCompra"
+                    android:layout_width="fill_parent"
+                    android:layout_height="55dp"
+                    android:layout_gravity="right"
+                    android:layout_weight="1"
+                    android:text="Finalizar Compra"
+                    android:onClick="finalizarCompra"
+                    />
+            </LinearLayout>
 
         </LinearLayout>
     </android.support.design.widget.CoordinatorLayout>

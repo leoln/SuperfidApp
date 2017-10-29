@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="506dp"
+        tools:layout_editor_absoluteX="80dp"
+        tools:layout_editor_absoluteY="2dp">
+
+        <Spinner
+            android:id="@+id/spinnerFormaPagamento"
+            android:layout_width="357dp"
+            android:layout_height="30dp"
+            android:layout_above="@+id/button2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="35dp"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="325dp" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="19dp"
+            android:text="Pagar"
+            tools:layout_editor_absoluteX="189dp"
+            tools:layout_editor_absoluteY="526dp" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/spinnerFormaPagamento"
+            android:layout_alignLeft="@+id/spinnerFormaPagamento"
+            android:layout_alignStart="@+id/spinnerFormaPagamento"
+            android:text="Definir Forma de Pagamento"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="278dp" />
+
+        <TextView
+            android:id="@+id/totalPagar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/textView8"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="124dp"
+            android:text="R$0000,00"
+            android:textSize="18sp"
+            tools:layout_editor_absoluteX="150dp"
+            tools:layout_editor_absoluteY="185dp" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/totalPagar"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="18dp"
+            android:text="TOTAL À PAGAR"
+            android:textSize="18sp"
+            tools:layout_editor_absoluteX="125dp"
+            tools:layout_editor_absoluteY="152dp" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="19dp"
+            android:text="Compra Finalizada!"
+            android:textSize="30sp"
+            tools:layout_editor_absoluteX="64dp"
+            tools:layout_editor_absoluteY="55dp" />
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>

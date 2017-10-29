@@ -2,18 +2,28 @@ package br.com.bhl.superfid.view;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import br.com.bhl.superfid.R;
+import br.com.bhl.superfid.model.Dispositivo;
+import br.com.bhl.superfid.model.Usuario;
 import br.com.bhl.superfid.service.BluetoothDataService;
 
 public class MainBluetoothActivity extends Activity {
 
     public static final int ENABLE_BLUETOOTH = 1;
     private String qrResult;
+
+    private Usuario usuario;
+    private Dispositivo dispositivo;
 
     public TextView status;
 
@@ -22,6 +32,9 @@ public class MainBluetoothActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_bluetooth);
 
+        IntentFilter filter3 = new IntentFilter(BluetoothDevice.ACTION_ACL_CONNECTED);
+        registerReceiver(mBroadcastReceiver1, filter3);
+
         status = findViewById(R.id.statusLabel);
 
         status.setText("Inicializando...");
@@ -29,7 +42,14 @@ public class MainBluetoothActivity extends Activity {
         //Pega a string enviada da Activity Principal, faz o split e separa nas variaveis
         Intent intent = getIntent();
 
+        usuario = (Usuario) intent.getSerializableExtra("usuario");
+
         qrResult = intent.getStringExtra("qrResult");
+        String[] textoSeparado = qrResult.split(";");
+        dispositivo = new Dispositivo();
+        dispositivo.setMacAddress(textoSeparado[0]);
+        dispositivo.setSsId(textoSeparado[1]);
+        dispositivo.setPassword(textoSeparado[2]);
 
         BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
         if (btAdapter == null) {
@@ -51,7 +71,7 @@ public class MainBluetoothActivity extends Activity {
 
                 status.setText("Conectando...");
                 //conecta no carrinho se ja esta ativado o BT
-                startService(new Intent(this, BluetoothDataService.class).putExtra("qrResult", qrResult));
+                startService(new Intent(this, BluetoothDataService.class).putExtra("dispositivo", dispositivo));
             }
         }
     }
@@ -74,9 +94,32 @@ public class MainBluetoothActivity extends Activity {
         }
     }
 
+    public void startCompras() {
+
+        Intent dialogIntent = new Intent(this, ComprasActivity.class);
+        dialogIntent.putExtra("usuario",usuario);
+        dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(dialogIntent);
+    }
+
     @Override
     protected void onDestroy() {
         stopService(new Intent(this, BluetoothDataService.class));
         super.onDestroy();
     }
+
+    private final BroadcastReceiver mBroadcastReceiver1 = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+
+            if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
+
+                //Ativa activity compras
+                startCompras();
+
+            }
+        }
+    };
 }

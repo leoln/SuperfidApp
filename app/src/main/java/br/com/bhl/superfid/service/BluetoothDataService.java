@@ -19,6 +19,7 @@ import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.util.UUID;
 
+import br.com.bhl.superfid.model.Dispositivo;
 import br.com.bhl.superfid.view.ComprasActivity;
 import br.com.bhl.superfid.view.MainActivity;
 import br.com.bhl.superfid.view.MainBluetoothActivity;
@@ -33,20 +34,15 @@ public class BluetoothDataService extends Service {
     private ConnectingThread mConnectingThread;
     private ConnectedThread mConnectedThread;
 
+    private static Dispositivo dispositivo;
+
     private boolean stopThread;
     // SPP UUID service - this should work for most devices
     private static final UUID BTMODULEUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     // String for MAC address
-    private static String MAC_ADDRESS = "";
-    private static String PWD = "";
 
     private StringBuilder recDataString = new StringBuilder();
 
-    public void startCompras() {
-        Intent dialogIntent = new Intent(this, ComprasActivity.class);
-        dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(dialogIntent);
-    }
 
     public BluetoothDataService() {
 
@@ -63,19 +59,13 @@ public class BluetoothDataService extends Service {
         IntentFilter filter2 = new IntentFilter("android.bluetooth.device.action.PAIRING_REQUEST");
         registerReceiver(mBroadcastReceiver1, filter2);
 
-        IntentFilter filter3 = new IntentFilter(BluetoothDevice.ACTION_ACL_CONNECTED);
-        registerReceiver(mBroadcastReceiver1, filter3);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         //pega dados de conexao
         if (intent != null) {
-            String qrResult = intent.getStringExtra("qrResult");
-
-            String[] textoSeparado = qrResult.split(";");
-            MAC_ADDRESS = textoSeparado[0];
-            PWD = textoSeparado[2];
+            dispositivo = (Dispositivo) intent.getSerializableExtra("dispositivo");
         }else{
             onDestroy();
         }
@@ -157,8 +147,8 @@ public class BluetoothDataService extends Service {
             if (btAdapter.isEnabled()) {
                 Log.d("DEBUG BT", "BT ENABLED! BT ADDRESS : " + btAdapter.getAddress() + " , BT NAME : " + btAdapter.getName());
                 try {
-                    BluetoothDevice device = btAdapter.getRemoteDevice(MAC_ADDRESS);
-                    Log.d("DEBUG BT", "ATTEMPTING TO CONNECT TO REMOTE DEVICE : " + MAC_ADDRESS);
+                    BluetoothDevice device = btAdapter.getRemoteDevice(dispositivo.getMacAddress());
+                    Log.d("DEBUG BT", "ATTEMPTING TO CONNECT TO REMOTE DEVICE : " + dispositivo.getMacAddress());
                     mConnectingThread = new ConnectingThread(device);
                     mConnectingThread.start();
                 } catch (IllegalArgumentException e) {
@@ -182,7 +172,7 @@ public class BluetoothDataService extends Service {
             Log.d("DEBUG BT", "IN CONNECTING THREAD");
             mmDevice = device;
             BluetoothSocket temp = null;
-            Log.d("DEBUG BT", "MAC ADDRESS : " + MAC_ADDRESS);
+            Log.d("DEBUG BT", "MAC ADDRESS : " + dispositivo.getMacAddress());
             Log.d("DEBUG BT", "BT UUID : " + BTMODULEUUID);
             try {
                 temp = mmDevice.createRfcommSocketToServiceRecord(BTMODULEUUID);
@@ -324,20 +314,12 @@ public class BluetoothDataService extends Service {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            final String action = intent.getAction();
 
-            if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
-
-                //Ativa activity compras
-
-                //MainBluetoothActivity.status.setText("Pronto!");
-                startCompras();
-
-            } else if (intent.getAction().equals("android.bluetooth.device.action.PAIRING_REQUEST")) {
+            if (intent.getAction().equals("android.bluetooth.device.action.PAIRING_REQUEST")) {
                 try {
                     BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
-                    BluetoothDevice mBluetoothDevice = btAdapter.getRemoteDevice(MAC_ADDRESS);
-                    byte[] pin = (byte[]) BluetoothDevice.class.getMethod("convertPinToBytes", String.class).invoke(BluetoothDevice.class, PWD);
+                    BluetoothDevice mBluetoothDevice = btAdapter.getRemoteDevice(dispositivo.getMacAddress());
+                    byte[] pin = (byte[]) BluetoothDevice.class.getMethod("convertPinToBytes", String.class).invoke(BluetoothDevice.class, dispositivo.getPassword());
                     Method m = mBluetoothDevice.getClass().getMethod("setPin", byte[].class);
                     m.invoke(mBluetoothDevice, pin);
                     mBluetoothDevice.getClass().getMethod("setPairingConfirmation", boolean.class).invoke(mBluetoothDevice, true);

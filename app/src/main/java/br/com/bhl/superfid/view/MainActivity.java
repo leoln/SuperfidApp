@@ -99,6 +99,7 @@ public class MainActivity extends ComumActivity {
             } else {
                 Intent it = new Intent(this, MainBluetoothActivity.class);
                 it.putExtra("qrResult", result.getContents());
+                it.putExtra("usuario",usuario);
                 startActivity(it);
                 finish();
             }
@@ -156,8 +157,13 @@ public class MainActivity extends ComumActivity {
             super.onPostExecute(usuario);
             closeProgressBar();
 
-            toolbar.setTitle("Seja bem-vindo " + usuario.getNome());
-            setSupportActionBar(toolbar);
+            if(usuario.getNome().equals(null)){
+                toolbar.setTitle("Seja bem-vindo");
+                setSupportActionBar(toolbar);
+            }else {
+                toolbar.setTitle("Seja bem-vindo " + usuario.getNome());
+                setSupportActionBar(toolbar);
+            }
         }
     }
 
