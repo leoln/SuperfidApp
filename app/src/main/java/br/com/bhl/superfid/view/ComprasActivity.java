@@ -13,6 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,8 +31,10 @@ import br.com.bhl.superfid.R;
 import br.com.bhl.superfid.controller.ComprasAdapter;
 import br.com.bhl.superfid.controller.DividerItemDecoration;
 import br.com.bhl.superfid.model.Carrinho;
+import br.com.bhl.superfid.model.Compra;
 import br.com.bhl.superfid.model.ItemCarrinho;
 import br.com.bhl.superfid.model.Produto;
+import br.com.bhl.superfid.model.Usuario;
 import br.com.bhl.superfid.service.BluetoothDataService;
 import br.com.bhl.superfid.util.WebClient;
 
@@ -39,8 +43,14 @@ public class ComprasActivity extends AppCompatActivity {
     public static RecyclerView recyclerView;
 
     private static Carrinho carrinho;
+    private Compra compra;
+    private Usuario usuario;
 
     private static TextView subTotal;
+
+    private static String subTotalString;
+
+    private Button finalizar, cancelar;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,11 +59,26 @@ public class ComprasActivity extends AppCompatActivity {
 
         subTotal = (TextView) findViewById(R.id.subTotal);
 
+        Intent intent = getIntent();
+
+        usuario = (Usuario) intent.getSerializableExtra("usuario");
+        //cria carrinho
+
         carrinho = new Carrinho();
 
         Calendar calendar = GregorianCalendar.getInstance();
-        SimpleDateFormat data = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+        SimpleDateFormat data = new SimpleDateFormat("dd/MM/yyyy");
+
+
         carrinho.setDataCriacao(data.format(calendar.getTime()));
+
+        //cria compra
+        compra = new Compra();
+
+        compra.setDataInicio(data.format(calendar.getTime()));
+        compra.setCodigoCarrinho(carrinho.getCodigo());
+        compra.setCodigoUsuario(usuario.getCodigoSistema());
 
         Log.v("CARRINHO", carrinho.toString());
 
@@ -73,8 +98,32 @@ public class ComprasActivity extends AppCompatActivity {
         IntentFilter filter1 = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
         registerReceiver(mBroadcastReceiver2, filter1);
 
+        //definindo botoes
+        finalizar = (Button)findViewById(R.id.BtnFinalizarCompra);
+        cancelar = (Button)findViewById(R.id.BtnCancelarCompra);
+
     }
 
+    public void finalizarCompra(View view){
+
+        Calendar calendar = GregorianCalendar.getInstance();
+        SimpleDateFormat data = new SimpleDateFormat("dd/MM/yyyy");
+
+        compra.setDataTermino(data.format(calendar.getTime()));
+        compra.setIndicadorFinalizado(1);
+        compra.setPrecoTotal(carrinho.getSubtotal());
+
+        //aqui deve enviar via webservice compra para salvar no Banco de dados
+
+        Intent it = new Intent(this, FinalizarCompraActivity.class);
+        it.putExtra("subtotal", subTotalString);
+        it.putExtra("compra",compra);
+        startActivity(it);
+        finish();
+    }
+    public void cancelarCompra(View view){
+
+    }
     public static void addProduto(String codigoRecebido) {
         ProdutoWebService produtoWebService = new ProdutoWebService();
         produtoWebService.execute(codigoRecebido);
@@ -85,7 +134,6 @@ public class ComprasActivity extends AppCompatActivity {
         super.onDestroy();
         stopService(new Intent(ComprasActivity.this, BluetoothDataService.class));
         unregisterReceiver(mBroadcastReceiver2);
-        finish();
     }
 
     private final BroadcastReceiver mBroadcastReceiver2 = new BroadcastReceiver() {
@@ -170,6 +218,8 @@ public class ComprasActivity extends AppCompatActivity {
 
             NumberFormat formatarSubtotal = NumberFormat.getCurrencyInstance(new Locale("pt" ,"BR"));
             subTotal.setText(formatarSubtotal.format(carrinho.getSubtotal()));
+
+            subTotalString = formatarSubtotal.format(carrinho.getSubtotal());
         }
     }
 
