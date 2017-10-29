@@ -52,7 +52,7 @@ public class ComprasActivity extends AppCompatActivity {
         carrinho = new Carrinho();
 
         Calendar calendar = GregorianCalendar.getInstance();
-        SimpleDateFormat data = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat data = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         carrinho.setDataCriacao(data.format(calendar.getTime()));
 
         Log.v("CARRINHO", carrinho.toString());
