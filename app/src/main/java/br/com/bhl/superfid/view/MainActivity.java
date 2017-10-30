@@ -107,7 +107,6 @@ public class MainActivity extends ComumActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        finish();
     }
 
     /* ***************************************************************************

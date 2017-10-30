@@ -57,21 +57,17 @@ public class BluetoothDataService extends Service {
         //define os filtros para o broadcast do BT
 
         IntentFilter filter2 = new IntentFilter("android.bluetooth.device.action.PAIRING_REQUEST");
-        registerReceiver(mBroadcastReceiver1, filter2);
+        registerReceiver(mBroadcastReceiver3, filter2);
 
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         //pega dados de conexao
-        if (intent != null) {
-            dispositivo = (Dispositivo) intent.getSerializableExtra("dispositivo");
-        }else{
-            onDestroy();
-        }
 
+        dispositivo = (Dispositivo) intent.getSerializableExtra("dispositivo");
 
-
+        Log.d("BT_SERVICE", "DISPOSITIVO: "+dispositivo.getMacAddress()+" - "+dispositivo.getPassword());
 
         Log.d("BT SERVICE", "SERVICE STARTED");
 
@@ -121,7 +117,7 @@ public class BluetoothDataService extends Service {
         super.onDestroy();
         bluetoothIn.removeCallbacksAndMessages(null);
         stopThread = true;
-        unregisterReceiver(mBroadcastReceiver1);
+        unregisterReceiver(mBroadcastReceiver3);
         if (mConnectedThread != null) {
             mConnectedThread.closeStreams();
         }
@@ -205,6 +201,7 @@ public class BluetoothDataService extends Service {
                 try {
                     Log.d("DEBUG BT", "SOCKET CONNECTION FAILED : " + e.toString());
                     Log.d("BT SERVICE", "SOCKET CONNECTION FAILED, STOPPING SERVICE");
+                    Log.d("BT_SERVICE", "DISPOSITIVO: "+dispositivo.getMacAddress()+" - "+dispositivo.getPassword());
                     mmSocket.close();
                     stopSelf();
                 } catch (IOException e2) {
@@ -310,7 +307,7 @@ public class BluetoothDataService extends Service {
         }
     }
 
-    private final BroadcastReceiver mBroadcastReceiver1 = new BroadcastReceiver() {
+    private final BroadcastReceiver mBroadcastReceiver3 = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {

@@ -58,6 +58,12 @@
         <activity
             android:name=".view.FinalizarCompraActivity"
             android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".view.PagamentoCreditoActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".view.PagamentoSucessoActivity"
+            android:windowSoftInputMode="stateHidden" />
 
         <service android:name=".service.BluetoothDataService"/>
     </application>

@@ -56,7 +56,6 @@ public class MainBluetoothActivity extends Activity {
             //statusMessage.setText("Que pena! Hardware Bluetooth não está funcionando :(");
             status.setText("Bluetooth não está funcionando.");
             finish();
-            onDestroy();
         } else {
             //statusMessage.setText("Ótimo! Hardware Bluetooth está funcionando :)");
 
@@ -84,12 +83,13 @@ public class MainBluetoothActivity extends Activity {
 
                 status.setText("Conectando...");
                 //conecta no carrinho apos ativar com sucesso o BT
-                startService(new Intent(this, BluetoothDataService.class).putExtra("qrResult", qrResult));
+                startService(new Intent(this, BluetoothDataService.class).putExtra("dispositivo", dispositivo));
 
             } else {
                 //statusMessage.setText("Bluetooth não ativado :(");
                 status.setText("Erro ao conectar");
                 Toast.makeText(getApplicationContext(), "Não foi possível ativar o BT", Toast.LENGTH_SHORT).show();
+                finish();
             }
         }
     }
@@ -98,7 +98,6 @@ public class MainBluetoothActivity extends Activity {
 
         Intent dialogIntent = new Intent(this, ComprasActivity.class);
         dialogIntent.putExtra("usuario",usuario);
-        dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(dialogIntent);
         finish();
     }
@@ -106,7 +105,6 @@ public class MainBluetoothActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        stopService(new Intent(this, BluetoothDataService.class));
         unregisterReceiver(mBroadcastReceiver1);
     }
 
@@ -120,7 +118,6 @@ public class MainBluetoothActivity extends Activity {
 
                 //Ativa activity compras
                 startCompras();
-
             }
         }
     };

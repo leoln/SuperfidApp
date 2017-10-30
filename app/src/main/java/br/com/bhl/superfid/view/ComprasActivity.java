@@ -57,6 +57,12 @@ public class ComprasActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compras);
 
+        //filtros bluetooth
+        IntentFilter filter4 = new IntentFilter(BluetoothDevice.ACTION_ACL_DISCONNECTED);
+        registerReceiver(mBroadcastReceiver2, filter4);
+        IntentFilter filter1 = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
+        registerReceiver(mBroadcastReceiver2, filter1);
+
         subTotal = (TextView) findViewById(R.id.subTotal);
 
         Intent intent = getIntent();
@@ -92,11 +98,6 @@ public class ComprasActivity extends AppCompatActivity {
         RecyclerView.LayoutManager layout = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layout);
 
-        //filtros bluetooth
-        IntentFilter filter4 = new IntentFilter(BluetoothDevice.ACTION_ACL_DISCONNECTED);
-        registerReceiver(mBroadcastReceiver2, filter4);
-        IntentFilter filter1 = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
-        registerReceiver(mBroadcastReceiver2, filter1);
 
         //definindo botoes
         finalizar = (Button) findViewById(R.id.BtnFinalizarCompra);

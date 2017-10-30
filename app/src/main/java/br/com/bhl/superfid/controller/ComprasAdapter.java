@@ -22,6 +22,8 @@ public class ComprasAdapter extends RecyclerView.Adapter {
     private List<ItemCarrinho> itemCarrinhos;
     private Context context;
 
+    private static int loadImage;
+
     ComprasViewHolder holder;
     ItemCarrinho itemCarrinho;
     Bitmap imagem;
@@ -55,6 +57,27 @@ public class ComprasAdapter extends RecyclerView.Adapter {
         holder.validade.setText("Dt. Validade: " + itemCarrinho.getProduto().getDataValidade());
         holder.quantidade.setText("Quantidade: " + itemCarrinho.getQuantidade());
 
+        loadImage = 0;
+        //while(loadImage==0){}
+/*
+        new Thread(new Runnable()
+
+        {
+            public void run() {
+
+                try {
+                    URL url;
+                    url = new URL(itemCarrinho.getProduto().getUrlImagem());
+                    imagem = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                    holder.imagem.setImageBitmap(imagem);
+                    loadImage=1;
+                } catch (Exception e) {
+                    Log.d("COMPRAS_IMAGEM", e.toString());
+                }
+
+            }
+        }).start();
+        */
     }
 
     @Override
