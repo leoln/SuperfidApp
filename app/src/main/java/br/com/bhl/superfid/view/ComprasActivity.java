@@ -118,7 +118,7 @@ public class ComprasActivity extends AppCompatActivity {
         CompraWebService compraWebService = new CompraWebService();
         compraWebService.execute(compra);
 
-        Intent it = new Intent(this, FinalizarCompraActivity.class);
+        Intent it = new Intent(this, PagamentoCreditoActivity.class);
         it.putExtra("subtotal", subTotalString);
         it.putExtra("compra", compra);
         startActivity(it);
