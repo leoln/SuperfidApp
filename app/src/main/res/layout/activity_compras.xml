@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
-    tools:context="br.com.bhl.superfid.view.MainBluetoothActivity">
+    tools:context="br.com.bhl.superfid.view.ComprasActivity">
 
     <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -50,21 +50,30 @@
                     android:layout_height="55dp"
                     android:layout_alignParentTop="true"
                     android:layout_gravity="left"
+                    android:layout_margin="5dip"
                     android:layout_toEndOf="@+id/BtnFinalizarCompra"
                     android:layout_toRightOf="@+id/BtnFinalizarCompra"
                     android:layout_weight="1"
+                    android:background="@color/colorPrimary"
+                    android:onClick="cancelarCompra"
                     android:text="Cancelar"
-                    android:onClick="cancelarCompra"/>
+                    android:textColor="#FFFFFF"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/BtnFinalizarCompra"
                     android:layout_width="fill_parent"
                     android:layout_height="55dp"
                     android:layout_gravity="right"
+                    android:layout_margin="5dip"
                     android:layout_weight="1"
-                    android:text="Finalizar Compra"
+                    android:background="@color/colorPrimary"
                     android:onClick="finalizarCompra"
-                    />
+                    android:text="Finalizar Compra"
+                    android:textColor="#FFFFFF"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
         </LinearLayout>

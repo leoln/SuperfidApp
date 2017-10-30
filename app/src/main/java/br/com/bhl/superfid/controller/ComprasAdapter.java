@@ -10,7 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import java.net.URL;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 import br.com.bhl.superfid.R;
 import br.com.bhl.superfid.model.ItemCarrinho;
@@ -44,30 +46,14 @@ public class ComprasAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
         holder = (ComprasViewHolder) viewHolder;
 
-
         itemCarrinho = itemCarrinhos.get(position);
 
-        holder.descricao.setText(itemCarrinho.getProduto().getDescricao());
-        holder.precoUnitario.setText("" + itemCarrinho.getProduto().getPrecoUnitario());
-        holder.validade.setText("" + itemCarrinho.getProduto().getDataValidade());
-        holder.quantidade.setText("" + itemCarrinho.getQuantidade());
+        NumberFormat formataReal = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
 
-       /* new Thread(new Runnable()
-
-        {
-            public void run() {
-
-                try {
-                    URL url;
-                    url = new URL(itemCarrinho.getProduto().getUrlImagem());
-                    imagem = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                    holder.imagem.setImageBitmap(imagem);
-                } catch (Exception e) {
-                    Log.d("COMPRAS_IMAGEM", e.toString());
-                }
-
-            }
-        }).start();*/
+        holder.descricao.setText(itemCarrinho.getProduto().getDescricao() + " " + itemCarrinho.getProduto().getMarca());
+        holder.precoUnitario.setText("" + formataReal.format( itemCarrinho.getProduto().getPrecoUnitario()));
+        holder.validade.setText("Dt. Validade: " + itemCarrinho.getProduto().getDataValidade());
+        holder.quantidade.setText("Quantidade: " + itemCarrinho.getQuantidade());
 
     }
 
