@@ -38,7 +38,8 @@
             android:textSize="17sp"
             android:textStyle="bold"
             tools:layout_editor_absoluteX="189dp"
-            tools:layout_editor_absoluteY="515dp" />
+            tools:layout_editor_absoluteY="515dp"
+            android:onClick="onCLickPagar"/>
 
         <TextView
             android:id="@+id/txtFormaPagamento"

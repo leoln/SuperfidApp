@@ -47,6 +47,7 @@
             android:textSize="17sp"
             android:textStyle="bold"
             android:background="@color/colorPrimary"
-            android:text="Fechar" />
+            android:text="Fechar"
+            android:onClick="onClickFecharPagamentoSucesso"/>
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

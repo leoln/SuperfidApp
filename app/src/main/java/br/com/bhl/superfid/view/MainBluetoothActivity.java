@@ -100,12 +100,14 @@ public class MainBluetoothActivity extends Activity {
         dialogIntent.putExtra("usuario",usuario);
         dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(dialogIntent);
+        finish();
     }
 
     @Override
     protected void onDestroy() {
-        stopService(new Intent(this, BluetoothDataService.class));
         super.onDestroy();
+        stopService(new Intent(this, BluetoothDataService.class));
+        unregisterReceiver(mBroadcastReceiver1);
     }
 
     private final BroadcastReceiver mBroadcastReceiver1 = new BroadcastReceiver() {

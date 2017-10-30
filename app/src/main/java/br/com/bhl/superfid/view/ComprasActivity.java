@@ -169,10 +169,10 @@ public class ComprasActivity extends AppCompatActivity {
 
                 Toast.makeText(getApplicationContext(), "Carrinho Desconectado", Toast.LENGTH_SHORT).show();
 
-                onDestroy();
                 Intent dialogIntent = new Intent(ComprasActivity.this, MainActivity.class);
                 dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 startActivity(dialogIntent);
+                finish();
             }
         }
     };

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -35,14 +36,27 @@ public class FinalizarCompraActivity extends Activity {
 
         total.setText(subtotal);
 
-        array_spinner =new String[2];
+        array_spinner =new String[1];
         array_spinner[0]="Cartão de Crédito";
-        array_spinner[1]="Cartão de Débito";
+        //array_spinner[1]="Cartão de Débito";
 
         Spinner s = (Spinner) findViewById(R.id.spinnerFormaPagamento);
         ArrayAdapter adapter = new ArrayAdapter(this,
                 android.R.layout.simple_spinner_item, array_spinner);
         s.setAdapter(adapter);
+
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    public void onCLickPagar(View view){
+
+        Intent it = new Intent(this, FinalizarCompraActivity.class);
+        it.putExtra("compra", compra);
+        startActivity(it);
+        finish();
 
     }
 }
