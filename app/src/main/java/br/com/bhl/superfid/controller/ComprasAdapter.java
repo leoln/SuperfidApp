@@ -22,8 +22,6 @@ public class ComprasAdapter extends RecyclerView.Adapter {
     private List<ItemCarrinho> itemCarrinhos;
     private Context context;
 
-    private static int loadImage;
-
     ComprasViewHolder holder;
     ItemCarrinho itemCarrinho;
     Bitmap imagem;
@@ -57,27 +55,35 @@ public class ComprasAdapter extends RecyclerView.Adapter {
         holder.validade.setText("Dt. Validade: " + itemCarrinho.getProduto().getDataValidade());
         holder.quantidade.setText("Quantidade: " + itemCarrinho.getQuantidade());
 
-        loadImage = 0;
-        //while(loadImage==0){}
+        if(itemCarrinho.getProduto().getCodigo() == 51){
+            holder.imagem.setImageResource(R.drawable.bolacha_bono);
+        }else if(itemCarrinho.getProduto().getCodigo() == 61){
+            holder.imagem.setImageResource(R.drawable.cocacola);
+        }else if(itemCarrinho.getProduto().getCodigo() == 91){
+            holder.imagem.setImageResource(R.drawable.batatapalha);
+        }else if(itemCarrinho.getProduto().getCodigo() == 81){
+            holder.imagem.setImageResource(R.drawable.heins);
+        }else if(itemCarrinho.getProduto().getCodigo() == 71){
+            holder.imagem.setImageResource(R.drawable.farofa);
+        }
 /*
-        new Thread(new Runnable()
+            new Thread(new Runnable()
 
-        {
-            public void run() {
+            {
+                public void run() {
 
-                try {
-                    URL url;
-                    url = new URL(itemCarrinho.getProduto().getUrlImagem());
-                    imagem = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                    holder.imagem.setImageBitmap(imagem);
-                    loadImage=1;
-                } catch (Exception e) {
-                    Log.d("COMPRAS_IMAGEM", e.toString());
+                    try {
+                        URL url;
+                        url = new URL(itemCarrinho.getProduto().getUrlImagem());
+                        imagem = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                        holder.imagem.setImageBitmap(imagem);
+                    } catch (Exception e) {
+                        Log.d("COMPRAS_IMAGEM", e.toString());
+                    }
+
                 }
-
-            }
-        }).start();
-        */
+            }).start();
+*/
     }
 
     @Override

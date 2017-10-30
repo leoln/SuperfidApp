@@ -53,7 +53,7 @@ public class FinalizarCompraActivity extends Activity {
 
     public void onCLickPagar(View view){
 
-        Intent it = new Intent(this, FinalizarCompraActivity.class);
+        Intent it = new Intent(this, PagamentoCreditoActivity.class);
         it.putExtra("compra", compra);
         startActivity(it);
         finish();
