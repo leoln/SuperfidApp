@@ -8,10 +8,6 @@ import android.view.View;
 
 import br.com.bhl.superfid.R;
 
-/**
- * Created by hericlespontes on 30/10/2017.
- */
-
 public class PagamentoSucessoActivity extends Activity {
 
     @Override

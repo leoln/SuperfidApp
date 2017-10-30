@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/SupeRFiD.iml" filepath="$PROJECT_DIR$/SupeRFiD.iml" />
-      <module fileurl="file://$PROJECT_DIR$/SuperfidApp.iml" filepath="$PROJECT_DIR$/SuperfidApp.iml" />
+      <module fileurl="file://D:\Documentos\Projects\SupeRFiD\SuperfidApp.iml" filepath="D:\Documentos\Projects\SupeRFiD\SuperfidApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

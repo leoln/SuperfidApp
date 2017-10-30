@@ -4,16 +4,17 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import br.com.bhl.superfid.R;
-import br.com.bhl.superfid.model.Compra;
+import com.google.gson.Gson;
 
-/**
- * Created by hericlespontes on 30/10/2017.
- */
+import br.com.bhl.superfid.R;
+import br.com.bhl.superfid.model.CartaoCredito;
+import br.com.bhl.superfid.model.Compra;
+import br.com.bhl.superfid.model.Pagamento;
 
 public class PagamentoCreditoActivity extends Activity {
 
@@ -62,8 +63,25 @@ public class PagamentoCreditoActivity extends Activity {
 
     public void onClickPagarCredito(View view){
 
+        Gson gson = new Gson();
+
         if(checarCampos()){
             //se nao tem campos vazios
+            Pagamento pagamento = new Pagamento();
+            pagamento.setCompra(compra);
+
+            CartaoCredito cartao = new CartaoCredito();
+            cartao.setCPF(CPF.getText().toString());
+            cartao.setCVV(Integer.parseInt( codSeguranca.getText().toString() ));
+            cartao.setNomeTitular(nomeTitular.getText().toString());
+            cartao.setValidade(validade.getText().toString());
+            cartao.setNumeroCartao(numeroCartao.getText().toString());
+
+            pagamento.setCartao(cartao);
+
+            String json = gson.toJson(pagamento);
+
+            Log.d("JSONDEBUG", json);
 
             //envia para webservice de pagamento para confirmar
 

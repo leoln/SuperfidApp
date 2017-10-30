@@ -1,10 +1,9 @@
 package br.com.bhl.superfid.model;
 
-/**
- * Created by hericlespontes on 30/10/2017.
- */
+import java.io.Serializable;
 
-public class CartaoCredito {
+public class CartaoCredito implements Serializable{
+
     private String numeroCartao;
     private String validade;
     private int CVV;
