@@ -43,6 +43,10 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="28dp"
+            android:textColor="#FFFFFF"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:background="@color/colorPrimary"
             android:text="Fechar" />
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

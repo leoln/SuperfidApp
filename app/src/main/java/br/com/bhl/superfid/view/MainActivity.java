@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -64,12 +66,6 @@ public class MainActivity extends ComumActivity {
     /* ***************************************************************************
     *                      METODOS DE CICLO DE VIDA DO ANDROID
     * *************************************************************************** */
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        initUser();
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -138,18 +134,21 @@ public class MainActivity extends ComumActivity {
 
         @Override
         protected Usuario doInBackground(String... strings) {
-            Gson gson = new Gson();
+            Usuario user = null;
             String json = "";
+
+            Gson gson = new Gson();
 
             try {
                 json = WebClient.get("/usuario/parseJson?codigoAutenticacao=", strings[0]);
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            usuario = gson.fromJson(json, Usuario.class);
+            user = gson.fromJson(json, Usuario.class);
 
-            return usuario;
+            return user;
         }
 
         @Override
@@ -157,14 +156,18 @@ public class MainActivity extends ComumActivity {
             super.onPostExecute(usuario);
             closeProgressBar();
 
-            if(usuario.getNome().equals(null)){
-                toolbar.setTitle("Seja bem-vindo");
-                setSupportActionBar(toolbar);
-            }else {
-                toolbar.setTitle("Seja bem-vindo " + usuario.getNome());
-                setSupportActionBar(toolbar);
-            }
+            setUsuario(usuario);
+
+            toolbar.setTitle("Seja bem-vindo " + getUsuario().getNome());
+            setSupportActionBar(toolbar);
         }
     }
 
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
 }

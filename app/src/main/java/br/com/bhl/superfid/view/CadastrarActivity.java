@@ -90,7 +90,7 @@ public class CadastrarActivity extends ComumActivity {
         if (!TextUtils.isEmpty(edt_cpf.getText().toString()))
             usuario.setNumeroCPF(Long.parseLong(StringUtil.tirarCaracteresEspeciais(edt_cpf.getText().toString())));
         else
-            usuario.setNumeroCPF(0);
+            usuario.setNumeroCPF((long)0);
 
 
         if (!TextUtils.isEmpty(edt_ddd.getText().toString()))
@@ -102,7 +102,7 @@ public class CadastrarActivity extends ComumActivity {
         if (!TextUtils.isEmpty(edt_telefone.getText().toString()))
             usuario.setNumeroTelefone(Long.parseLong(edt_telefone.getText().toString()));
         else
-            usuario.setNumeroTelefone(0);
+            usuario.setNumeroTelefone((long)0);
 
 
         if (!TextUtils.isEmpty(edt_dtnascimento.getText().toString()))
@@ -241,9 +241,6 @@ public class CadastrarActivity extends ComumActivity {
         protected String doInBackground(Usuario... usuarios) {
             Usuario usuario = usuarios[0];
             Gson gson = new Gson();
-
-            Log.v("USUARIO", usuario.toString());
-            Log.v("JSON", gson.toJson(usuario));
 
             try {
                 WebClient.post("/usuario/cadastrar", gson.toJson(usuario));

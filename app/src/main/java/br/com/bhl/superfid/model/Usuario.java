@@ -11,9 +11,9 @@ public class Usuario implements Serializable{
     private String sobrenome;
     private String dataNascimento;
     private String emailAutenticacao;
-    private long numeroCPF;
-    private int numeroDDD;
-    private long numeroTelefone;
+    private Long numeroCPF;
+    private Integer numeroDDD;
+    private Long numeroTelefone;
 
     public Usuario() { }
 
@@ -49,30 +49,6 @@ public class Usuario implements Serializable{
         this.sobrenome = sobrenome;
     }
 
-    public long getNumeroCPF() {
-        return numeroCPF;
-    }
-
-    public void setNumeroCPF(long numeroCPF) {
-        this.numeroCPF = numeroCPF;
-    }
-
-    public int getNumeroDDD() {
-        return numeroDDD;
-    }
-
-    public void setNumeroDDD(int numeroDDD) {
-        this.numeroDDD = numeroDDD;
-    }
-
-    public long getNumeroTelefone() {
-        return numeroTelefone;
-    }
-
-    public void setNumeroTelefone(long numeroTelefone) {
-        this.numeroTelefone = numeroTelefone;
-    }
-
     public String getDataNascimento() {
         return dataNascimento;
     }
@@ -89,48 +65,109 @@ public class Usuario implements Serializable{
         this.emailAutenticacao = emailAutenticacao;
     }
 
+    public Long getNumeroCPF() {
+        return numeroCPF;
+    }
+
+    public void setNumeroCPF(Long numeroCPF) {
+        this.numeroCPF = numeroCPF;
+    }
+
+    public Integer getNumeroDDD() {
+        return numeroDDD;
+    }
+
+    public void setNumeroDDD(Integer numeroDDD) {
+        this.numeroDDD = numeroDDD;
+    }
+
+    public Long getNumeroTelefone() {
+        return numeroTelefone;
+    }
+
+    public void setNumeroTelefone(Long numeroTelefone) {
+        this.numeroTelefone = numeroTelefone;
+    }
+
     @Override
     public String toString() {
         return "Usuario [codigoSistema=" + codigoSistema + ", codigoAutenticacao=" + codigoAutenticacao + ", nome="
                 + nome + ", sobrenome=" + sobrenome + ", dataNascimento=" + dataNascimento + ", emailAutenticacao="
-                + emailAutenticacao + ", numeroCPF=" + numeroCPF + ", numeroDDD=" + numeroDDD + ", numeroTelefone=" + numeroTelefone + "]";
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Usuario)) return false;
-
-        Usuario usuario = (Usuario) o;
-
-        if (getCodigoSistema() != usuario.getCodigoSistema()) return false;
-        if (getNumeroCPF() != usuario.getNumeroCPF()) return false;
-        if (getNumeroDDD() != usuario.getNumeroDDD()) return false;
-        if (getNumeroTelefone() != usuario.getNumeroTelefone()) return false;
-        if (getCodigoAutenticacao() != null ? !getCodigoAutenticacao().equals(usuario.getCodigoAutenticacao()) : usuario.getCodigoAutenticacao() != null)
-            return false;
-        if (getNome() != null ? !getNome().equals(usuario.getNome()) : usuario.getNome() != null)
-            return false;
-        if (getSobrenome() != null ? !getSobrenome().equals(usuario.getSobrenome()) : usuario.getSobrenome() != null)
-            return false;
-        if (getDataNascimento() != null ? !getDataNascimento().equals(usuario.getDataNascimento()) : usuario.getDataNascimento() != null)
-            return false;
-        return getEmailAutenticacao() != null ? getEmailAutenticacao().equals(usuario.getEmailAutenticacao()) : usuario.getEmailAutenticacao() == null;
-
+                + emailAutenticacao + ", numeroCPF=" + numeroCPF + ", numeroDDD=" + numeroDDD + ", numeroTelefone="
+                + numeroTelefone + "]";
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (getCodigoSistema() ^ (getCodigoSistema() >>> 32));
-        result = 31 * result + (getCodigoAutenticacao() != null ? getCodigoAutenticacao().hashCode() : 0);
-        result = 31 * result + (getNome() != null ? getNome().hashCode() : 0);
-        result = 31 * result + (getSobrenome() != null ? getSobrenome().hashCode() : 0);
-        result = 31 * result + (getDataNascimento() != null ? getDataNascimento().hashCode() : 0);
-        result = 31 * result + (getEmailAutenticacao() != null ? getEmailAutenticacao().hashCode() : 0);
-        result = 31 * result + (int) (getNumeroCPF() ^ (getNumeroCPF() >>> 32));
-        result = 31 * result + getNumeroDDD();
-        result = 31 * result + (int) (getNumeroTelefone() ^ (getNumeroTelefone() >>> 32));
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((codigoAutenticacao == null) ? 0 : codigoAutenticacao.hashCode());
+        result = prime * result + ((codigoSistema == null) ? 0 : codigoSistema.hashCode());
+        result = prime * result + ((dataNascimento == null) ? 0 : dataNascimento.hashCode());
+        result = prime * result + ((emailAutenticacao == null) ? 0 : emailAutenticacao.hashCode());
+        result = prime * result + ((nome == null) ? 0 : nome.hashCode());
+        result = prime * result + ((numeroCPF == null) ? 0 : numeroCPF.hashCode());
+        result = prime * result + ((numeroDDD == null) ? 0 : numeroDDD.hashCode());
+        result = prime * result + ((numeroTelefone == null) ? 0 : numeroTelefone.hashCode());
+        result = prime * result + ((sobrenome == null) ? 0 : sobrenome.hashCode());
         return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Usuario other = (Usuario) obj;
+        if (codigoAutenticacao == null) {
+            if (other.codigoAutenticacao != null)
+                return false;
+        } else if (!codigoAutenticacao.equals(other.codigoAutenticacao))
+            return false;
+        if (codigoSistema == null) {
+            if (other.codigoSistema != null)
+                return false;
+        } else if (!codigoSistema.equals(other.codigoSistema))
+            return false;
+        if (dataNascimento == null) {
+            if (other.dataNascimento != null)
+                return false;
+        } else if (!dataNascimento.equals(other.dataNascimento))
+            return false;
+        if (emailAutenticacao == null) {
+            if (other.emailAutenticacao != null)
+                return false;
+        } else if (!emailAutenticacao.equals(other.emailAutenticacao))
+            return false;
+        if (nome == null) {
+            if (other.nome != null)
+                return false;
+        } else if (!nome.equals(other.nome))
+            return false;
+        if (numeroCPF == null) {
+            if (other.numeroCPF != null)
+                return false;
+        } else if (!numeroCPF.equals(other.numeroCPF))
+            return false;
+        if (numeroDDD == null) {
+            if (other.numeroDDD != null)
+                return false;
+        } else if (!numeroDDD.equals(other.numeroDDD))
+            return false;
+        if (numeroTelefone == null) {
+            if (other.numeroTelefone != null)
+                return false;
+        } else if (!numeroTelefone.equals(other.numeroTelefone))
+            return false;
+        if (sobrenome == null) {
+            if (other.sobrenome != null)
+                return false;
+        } else if (!sobrenome.equals(other.sobrenome))
+            return false;
+        return true;
     }
 
 }//fim da classe

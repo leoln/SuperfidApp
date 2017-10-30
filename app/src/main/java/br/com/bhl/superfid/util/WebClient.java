@@ -47,12 +47,21 @@ public abstract class WebClient {
 
         URL url = new URL(BASE_URL + caminho + valor);
 
+        Log.v("URL", BASE_URL + caminho + valor);
+
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder().url(url).build();
-        Response response = client.newCall(request).execute();
+        String jsonDeResposta = "";
 
-        String jsonDeResposta = response.body().string();
+        try {
+            Response response = client.newCall(request).execute();
+            jsonDeResposta = response.body().string();
+        } catch( Exception e) {
+            Log.e("ERROJSON", e.getMessage());
+        }
+
+        Log.v("JSONRESP", jsonDeResposta);
 
         return jsonDeResposta;
     }

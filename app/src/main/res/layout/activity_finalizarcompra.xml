@@ -3,11 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingLeft="45dip"
+    android:paddingRight="45dip">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="506dp"
+        tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="80dp"
         tools:layout_editor_absoluteY="2dp">
 
@@ -15,25 +18,30 @@
             android:id="@+id/spinnerFormaPagamento"
             android:layout_width="357dp"
             android:layout_height="30dp"
-            android:layout_above="@+id/button2"
+            android:layout_above="@+id/btnPagar"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="35dp"
+            android:layout_marginTop="10dip"
             tools:layout_editor_absoluteX="16dp"
             tools:layout_editor_absoluteY="325dp" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/btnPagar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="19dp"
+            android:background="@color/colorPrimary"
             android:text="Pagar"
+            android:textColor="#FFFFFF"
+            android:textSize="17sp"
+            android:textStyle="bold"
             tools:layout_editor_absoluteX="189dp"
-            tools:layout_editor_absoluteY="526dp" />
+            tools:layout_editor_absoluteY="515dp" />
 
         <TextView
-            android:id="@+id/textView8"
+            android:id="@+id/txtFormaPagamento"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@+id/spinnerFormaPagamento"
@@ -47,7 +55,7 @@
             android:id="@+id/totalPagar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/textView8"
+            android:layout_above="@+id/txtFormaPagamento"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="124dp"
             android:text="R$0000,00"
@@ -56,7 +64,7 @@
             tools:layout_editor_absoluteY="185dp" />
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/txtTotalPagar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@+id/totalPagar"
@@ -68,7 +76,7 @@
             tools:layout_editor_absoluteY="152dp" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/txtCompraFinalizada"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -78,6 +86,7 @@
             android:textSize="30sp"
             tools:layout_editor_absoluteX="64dp"
             tools:layout_editor_absoluteY="55dp" />
+
     </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>

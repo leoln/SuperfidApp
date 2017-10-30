@@ -68,19 +68,19 @@ public class ComprasActivity extends AppCompatActivity {
 
         Calendar calendar = GregorianCalendar.getInstance();
 
-        SimpleDateFormat data = new SimpleDateFormat("dd/MM/yyyy");
-
-
+        SimpleDateFormat data = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         carrinho.setDataCriacao(data.format(calendar.getTime()));
 
         //cria compra
         compra = new Compra();
-
         compra.setDataInicio(data.format(calendar.getTime()));
         compra.setCodigoCarrinho(carrinho.getCodigo());
         compra.setCodigoUsuario(usuario.getCodigoSistema());
+        compra.setIndicadorFinalizado("0");
+        compra.setIndicadorPagamento("0");
 
-        Log.v("CARRINHO", carrinho.toString());
+        CompraWebService compraWebService = new CompraWebService();
+        compraWebService.execute(compra);
 
         CarrinhoWebService carrinhoWebService = new CarrinhoWebService();
         carrinhoWebService.execute(carrinho);
@@ -99,31 +99,35 @@ public class ComprasActivity extends AppCompatActivity {
         registerReceiver(mBroadcastReceiver2, filter1);
 
         //definindo botoes
-        finalizar = (Button)findViewById(R.id.BtnFinalizarCompra);
-        cancelar = (Button)findViewById(R.id.BtnCancelarCompra);
+        finalizar = (Button) findViewById(R.id.BtnFinalizarCompra);
+        cancelar = (Button) findViewById(R.id.BtnCancelarCompra);
 
     }
 
-    public void finalizarCompra(View view){
+    public void finalizarCompra(View view) {
 
         Calendar calendar = GregorianCalendar.getInstance();
-        SimpleDateFormat data = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat data = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
         compra.setDataTermino(data.format(calendar.getTime()));
-        compra.setIndicadorFinalizado(1);
+        compra.setIndicadorFinalizado("1");
         compra.setPrecoTotal(carrinho.getSubtotal());
 
         //aqui deve enviar via webservice compra para salvar no Banco de dados
+        CompraWebService compraWebService = new CompraWebService();
+        compraWebService.execute(compra);
 
         Intent it = new Intent(this, FinalizarCompraActivity.class);
         it.putExtra("subtotal", subTotalString);
-        it.putExtra("compra",compra);
+        it.putExtra("compra", compra);
         startActivity(it);
         finish();
     }
-    public void cancelarCompra(View view){
+
+    public void cancelarCompra(View view) {
 
     }
+
     public static void addProduto(String codigoRecebido) {
         ProdutoWebService produtoWebService = new ProdutoWebService();
         produtoWebService.execute(codigoRecebido);
@@ -208,7 +212,7 @@ public class ComprasActivity extends AppCompatActivity {
             itemCarrinho.setCodigoProduto(produto.getCodigo());
             itemCarrinho.setProduto(produto);
 
-            carrinho.setListaCarrinho( itemCarrinho );
+            carrinho.setListaCarrinho(itemCarrinho);
 
             ItemCarrinhoWebService itemCarrinhoWebService = new ItemCarrinhoWebService();
             itemCarrinhoWebService.execute(itemCarrinho);
@@ -216,7 +220,7 @@ public class ComprasActivity extends AppCompatActivity {
             recyclerView.getAdapter().notifyDataSetChanged();
             recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount());
 
-            NumberFormat formatarSubtotal = NumberFormat.getCurrencyInstance(new Locale("pt" ,"BR"));
+            NumberFormat formatarSubtotal = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
             subTotal.setText(formatarSubtotal.format(carrinho.getSubtotal()));
 
             subTotalString = formatarSubtotal.format(carrinho.getSubtotal());
@@ -251,6 +255,24 @@ public class ComprasActivity extends AppCompatActivity {
             try {
                 Log.v("CARRINHO", gson.toJson(carrinhos[0]));
                 WebClient.post("/carrinho/cadastrar", gson.toJson(carrinhos[0]));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+    }
+
+    private static class CompraWebService extends AsyncTask<Compra, Void, String> {
+
+        @Override
+        protected String doInBackground(Compra... compras) {
+
+            Gson gson = new Gson();
+
+            try {
+                Log.v("COMPRA", gson.toJson(compras[0]));
+                WebClient.post("/compra/cadastrar", gson.toJson(compras[0]));
             } catch (IOException e) {
                 e.printStackTrace();
             }

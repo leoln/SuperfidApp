@@ -2,33 +2,42 @@ package br.com.bhl.superfid.model;
 
 import java.io.Serializable;
 
-/**
- * Created by hericlespontes on 29/10/2017.
- */
-
 public class Compra implements Serializable{
 
-    private long codigoCarrinho;
-    private long codigoUsuario;
+    private Long codigo;
+    private Long codigoCarrinho;
+    private Long codigoUsuario;
     private String dataInicio;
     private String dataTermino;
-    private double precoTotal;
-    private int indicadorFinalizado;
+    private Double precoTotal;
+    private String indicadorFinalizado;
+    private String indicadorPagamento;
 
+    public Compra() {
+        this.codigo = (long)(Math.random() * 1000000000 * Math.random()) * hashCode();
+    }
 
-    public long getCodigoCarrinho() {
+    public Long getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(Long codigo) {
+        this.codigo = codigo;
+    }
+
+    public Long getCodigoCarrinho() {
         return codigoCarrinho;
     }
 
-    public void setCodigoCarrinho(long codigoCarrinho) {
+    public void setCodigoCarrinho(Long codigoCarrinho) {
         this.codigoCarrinho = codigoCarrinho;
     }
 
-    public long getCodigoUsuario() {
+    public Long getCodigoUsuario() {
         return codigoUsuario;
     }
 
-    public void setCodigoUsuario(long codigoUsuario) {
+    public void setCodigoUsuario(Long codigoUsuario) {
         this.codigoUsuario = codigoUsuario;
     }
 
@@ -48,19 +57,27 @@ public class Compra implements Serializable{
         this.dataTermino = dataTermino;
     }
 
-    public double getPrecoTotal() {
+    public Double getPrecoTotal() {
         return precoTotal;
     }
 
-    public void setPrecoTotal(double precoTotal) {
+    public void setPrecoTotal(Double precoTotal) {
         this.precoTotal = precoTotal;
     }
 
-    public int getIndicadorFinalizado() {
+    public String getIndicadorFinalizado() {
         return indicadorFinalizado;
     }
 
-    public void setIndicadorFinalizado(int indicadorFinalizado) {
+    public void setIndicadorFinalizado(String indicadorFinalizado) {
         this.indicadorFinalizado = indicadorFinalizado;
+    }
+
+    public String getIndicadorPagamento() {
+        return indicadorPagamento;
+    }
+
+    public void setIndicadorPagamento(String indicadorPagamento) {
+        this.indicadorPagamento = indicadorPagamento;
     }
 }

@@ -14,17 +14,12 @@ import java.util.Locale;
 import br.com.bhl.superfid.R;
 import br.com.bhl.superfid.model.Compra;
 
-/**
- * Created by hericlespontes on 29/10/2017.
- */
-
 public class FinalizarCompraActivity extends Activity {
 
     private String array_spinner[];
     private String subtotal;
     private TextView total;
     private Compra compra;
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
