@@ -2,6 +2,7 @@ package br.com.bhl.superfid.view;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -11,10 +12,14 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import java.io.IOException;
+import java.net.URLEncoder;
+
 import br.com.bhl.superfid.R;
 import br.com.bhl.superfid.model.CartaoCredito;
 import br.com.bhl.superfid.model.Compra;
 import br.com.bhl.superfid.model.Pagamento;
+import br.com.bhl.superfid.util.WebClient;
 
 public class PagamentoCreditoActivity extends Activity {
 
@@ -27,12 +32,15 @@ public class PagamentoCreditoActivity extends Activity {
     private EditText nomeTitular;
     private EditText CPF;
 
+    private static String isPagamentoOk;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pagamentocredito);
 
         Intent intent = getIntent();
+        isPagamentoOk = "";
 
         compra = (Compra) intent.getSerializableExtra("compra");//todos os dados de compra
 
@@ -80,21 +88,73 @@ public class PagamentoCreditoActivity extends Activity {
             pagamento.setCartao(cartao);
 
             String json = gson.toJson(pagamento);
-
-            Log.d("JSONDEBUG", json);
+            Log.v("JSONPAG", URLEncoder.encode(json));
 
             //envia para webservice de pagamento para confirmar
-
-            //se confirmou com sucesso abre a tela de confirmação
-
-            Intent it = new Intent(this, PagamentoSucessoActivity.class);
-            it.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-            startActivity(it);
-            finish();
+            PagamentoWebService pagamentoWebService = new PagamentoWebService();
+            pagamentoWebService.execute(URLEncoder.encode(json));
 
         }else{
             Toast.makeText(this, "Todos os campos são obrigatórios", Toast.LENGTH_LONG).show();
         }
 
     }
+
+    private class PagamentoWebService extends AsyncTask<String, Void, String> {
+
+
+        @Override
+        protected String doInBackground(String... strings) {
+
+            try {
+                isPagamentoOk = WebClient.get("/pagamento/isPagamentoSuccess?json=", strings[0]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            Log.v("STATUSPAG", isPagamentoOk);
+            return isPagamentoOk;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+
+            if(isPagamentoOk.equals("sucesso")) {
+                compra.setIndicadorPagamento("1");
+
+                CompraWebService compraWebService = new CompraWebService();
+                compraWebService.execute(compra);
+
+                Intent it = new Intent(PagamentoCreditoActivity.this, PagamentoSucessoActivity.class);
+                it.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                startActivity(it);
+                finish();
+            } else {
+                Toast.makeText(PagamentoCreditoActivity.this, "Pagamento não realizado por falta de crédito.", Toast.LENGTH_LONG).show();
+                Intent it = new Intent(PagamentoCreditoActivity.this, MainActivity.class);
+                startActivity(it);
+                finish();
+            }
+        }
+    }
+
+    private static class CompraWebService extends AsyncTask<Compra, Void, String> {
+
+        @Override
+        protected String doInBackground(Compra... compras) {
+
+            Gson gson = new Gson();
+
+            try {
+                Log.v("COMPRA", gson.toJson(compras[0]));
+                WebClient.post("/compra/cadastrar", gson.toJson(compras[0]));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+    }
+
 }
